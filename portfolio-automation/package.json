@@ -1,0 +1,32 @@
+{
+  "name": "portfolio-automation",
+  "version": "1.0.0",
+  "description": "This document describes a weekly, fully automated workflow that updates a portfolio site using GitHub activity, LangChain, and LocusGraph memory. The automation runs on GitHub Actions, generates content, commits updates, and deploys the site.",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "pnpm clean && tsc",
+    "start": "tsx scripts/weekly-update.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^1.1.48",
+    "@langchain/google-genai": "^2.1.31",
+    "@locusgraph/client": "^0.1.8",
+    "@octokit/rest": "^22.0.1",
+    "dotenv": "^17.4.2",
+    "langchain": "^1.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3"
+  }
+}
