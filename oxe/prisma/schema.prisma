@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model GithubProfile {
+  id        Int      @id @default(autoincrement())
+  login     String   @unique
+  name      String?
+  bio       String?
+  avatarUrl String?
+  htmlUrl   String?
+  followers Int      @default(0)
+  following Int      @default(0)
+  publicRepos Int    @default(0)
+  fetchedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("github_profiles")
+}
+
+model Repository {
+  id          Int      @id @default(autoincrement())
+  githubId    Int      @unique
+  name        String
+  fullName    String
+  description String?
+  language    String?
+  starCount   Int      @default(0)
+  forkCount   Int      @default(0)
+  isPrivate   Boolean  @default(false)
+  htmlUrl     String?
+  pushedAt    DateTime?
+  fetchedAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("repositories")
+}
+
+model GithubActivity {
+  id         Int      @id @default(autoincrement())
+  type       String   // commit | pr | issue
+  title      String
+  repoName   String
+  url        String?
+  sha        String?
+  occurredAt DateTime
+  createdAt  DateTime @default(now())
+
+  @@map("github_activities")
+}
+
+model WeeklyReport {
+  id          Int      @id @default(autoincrement())
+  weekStart   DateTime
+  weekEnd     DateTime
+  content     String
+  filePath    String?
+  generatedAt DateTime @default(now())
+
+  @@map("weekly_reports")
+}
+
+model MonthlyReport {
+  id          Int      @id @default(autoincrement())
+  month       Int
+  year        Int
+  content     String
+  filePath    String?
+  generatedAt DateTime @default(now())
+
+  @@unique([month, year])
+  @@map("monthly_reports")
+}
+
+model ResumeVersion {
+  id          Int      @id @default(autoincrement())
+  version     Int
+  content     String
+  htmlPath    String?
+  pdfPath     String?
+  generatedAt DateTime @default(now())
+
+  @@map("resume_versions")
+}
+
+model EmailLog {
+  id         Int      @id @default(autoincrement())
+  to         String
+  subject    String
+  status     String   // sent | failed
+  error      String?
+  sentAt     DateTime @default(now())
+
+  @@map("email_logs")
+}
+
+model WorkflowRun {
+  id        Int      @id @default(autoincrement())
+  workflow  String   // collect:github | generate:weekly | generate:monthly | generate:resume | send:email
+  status    String   // running | success | failed
+  error     String?
+  startedAt DateTime @default(now())
+  finishedAt DateTime?
+
+  @@map("workflow_runs")
+}
+
+model UserProfile {
+  id          Int      @id @default(autoincrement())
+  fullName    String?
+  email       String?
+  location    String?
+  website     String?
+  linkedin    String?
+  skills      String?  // comma-separated manual skills
+  education   String?  // free-text
+  experience  String?  // free-text notes
+  updatedAt   DateTime @updatedAt
+
+  @@map("user_profiles")
+}
