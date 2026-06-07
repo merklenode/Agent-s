@@ -1,0 +1,49 @@
+{
+  "name": "oxe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "seed": "tsx --env-file=.env prisma/seed.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "collect:github": "tsx --env-file=.env src/collectors/github.collector.ts",
+    "generate:weekly": "tsx --env-file=.env src/generators/weekly.generator.ts",
+    "generate:monthly": "tsx --env-file=.env src/generators/monthly.generator.ts",
+    "generate:resume": "tsx --env-file=.env src/generators/resume.generator.ts",
+    "send:email": "tsx --env-file=.env src/scripts/send-email.ts"
+  },
+  "dependencies": {
+    "@locusgraph/client": "^0.1.8",
+    "@octokit/plugin-paginate-rest": "^14.0.0",
+    "@octokit/rest": "^22.0.1",
+    "@prisma/adapter-pg": "^7.8.0",
+    "next": "16.2.7",
+    "nodemailer": "^8.0.10",
+    "openai": "^6.42.0",
+    "pg": "^8.21.0",
+    "puppeteer": "^25.1.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.8.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.0",
+    "@types/pg": "^8.20.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.7",
+    "prisma": "^7.8.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.22.4",
+    "typescript": "^5"
+  }
+}
