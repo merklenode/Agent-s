@@ -1,6 +1,7 @@
 {
   "updated": "2026-06-23",
   "purpose": "Completeness scoring rules for the resume agent. The agent uses these rules to score available candidate data, decide whether to generate a draft or ask follow-up questions, and produce a readiness report before generating any resume.",
+  "scoring_formula": "total_score = Σ(category_score × weight) / 100, where weights sum to 100",
 
   "categories": [
     {
@@ -17,7 +18,7 @@
         { "id": "linkedin_url",   "label": "LinkedIn URL",                "points": 10, "critical": false },
         { "id": "portfolio_url",  "label": "Portfolio or personal site",  "points":  5, "critical": false }
       ],
-      "scoring_note": "Category score = sum of points for present fields. Maximum is 100 (all fields present). Missing a critical field caps the resume at draft_ready regardless of total score.",
+      "scoring_note": "Category score = sum of points for present fields. Maximum is 100 (all fields present). Missing a critical field puts the resume at not_ready regardless of total score.",
       "follow_up_questions": {
         "full_name":     "What is your full name as it should appear on your resume?",
         "email":         "What is your professional email address?",
@@ -44,7 +45,7 @@
       ],
       "minimum_projects_for_draft": 1,
       "minimum_projects_for_application_ready": 2,
-      "scoring_note": "Score each project independently (sum of points for present fields, max 100). Category score = average of top 3 project scores. Zero projects = category score of 0. Missing resume_bullets on any project is the most common reason for a low score here.",
+      "scoring_note": "Score each project independently (sum of points for present fields, max 100). Category score = average of top 3 project scores. Zero projects = category score of 0. Missing resume_bullets on any project is the most common reason for a low score here. Note: github_url is not critical for scoring purposes but is required to reach application_ready.",
       "follow_up_questions": {
         "project_name":      "What projects should appear on your resume?",
         "tech_stack":        "What technologies did you use in {project_name}?",
@@ -184,7 +185,7 @@
       "agent_action"
     ],
     "example": {
-      "total_score": 62,
+      "total_score": 60,
       "readiness_level": "draft_ready",
       "category_scores": {
         "personal_profile": 75,
