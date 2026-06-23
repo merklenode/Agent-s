@@ -1,0 +1,115 @@
+{
+  "updated": "2026-06-23",
+  "dataset_name": "Project Evidence Dataset",
+  "purpose": "Structured evidence records for each portfolio project. Used by the resume agent to select bullets, map projects to resume profiles, and surface demo links or artifacts per target variant.",
+  "projects": [
+    {
+      "project_name": "Agent-s",
+      "short_description": "A dataset-driven AI resume agent that builds targeted resume variants by selecting project evidence, skills, and bullets based on a chosen developer profile.",
+      "target_resume_profiles": [
+        "AI Automation / AI Product Engineer",
+        "Developer Tools / Developer Experience Engineer",
+        "Software Engineer Core"
+      ],
+      "tech_stack": ["TypeScript", "Python", "Claude API", "JSON", "JSONL", "agent workflows"],
+      "github_url": "https://github.com/merklenode/Agent-s",
+      "live_demo_url": null,
+      "screenshots": [],
+      "architecture_summary": "Structured knowledge base (JSON) defines required skills, proof fields, and resume sections per target profile. An agent loop reads the knowledge base and project evidence records to assemble resume output tailored to the requested variant. Evidence records are the data layer; the agent is the selector and formatter.",
+      "candidate_personal_contribution": "Designed the full dataset schema including profile definitions, evidence record structure, and resume section requirements. Authored the knowledge base and project evidence records. Defined the agent task interface and multi-profile targeting logic.",
+      "strongest_resume_bullets": [
+        "Designed a structured dataset schema for a multi-profile resume agent, covering 8 developer profiles and 5 priority projects with per-project evidence records.",
+        "Built a profile-driven evidence selection model allowing one project to map to multiple resume profiles from a single shared evidence record.",
+        "Authored agent knowledge base and task examples consumed by an LLM agent to generate targeted resumes without manual editing."
+      ],
+      "measurable_impact": null,
+      "known_limitations": "No live demo; agent execution logic not yet shipped. Evidence records contain inferred content for non-Agent-s projects that needs candidate review and correction."
+    },
+    {
+      "project_name": "De_carSharing",
+      "short_description": "A full-stack car sharing platform where users can list, discover, and book vehicles, with real-time availability and booking state managed through a backend API and relational database.",
+      "target_resume_profiles": [
+        "Frontend / Full-stack Product Engineer",
+        "Backend / Platform Engineer",
+        "Software Engineer Core"
+      ],
+      "tech_stack": ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "REST APIs", "Prisma"],
+      "github_url": null,
+      "live_demo_url": null,
+      "screenshots": [],
+      "architecture_summary": "React/Next.js frontend consumes a REST API backend that handles user authentication, vehicle listings, booking state, and availability windows. PostgreSQL stores vehicle, user, and booking records with relational schema. API layer enforces booking conflict prevention and state transitions.",
+      "candidate_personal_contribution": "Built end-to-end: database schema design, REST API endpoints, booking conflict logic, and frontend UI components for vehicle discovery and booking flow.",
+      "strongest_resume_bullets": [
+        "Built a full-stack car sharing platform with React/Next.js frontend and REST API backend, handling user auth, vehicle listings, and booking state.",
+        "Designed relational PostgreSQL schema for vehicles, users, and bookings including conflict-safe availability logic.",
+        "Owned frontend-to-database delivery of core booking flow with TypeScript across the full stack."
+      ],
+      "measurable_impact": null,
+      "known_limitations": "No live deployment confirmed. GitHub URL not yet linked. Screenshots needed to support frontend/full-stack profile claims. Content in this record is inferred and has not been verified by the candidate."
+    },
+    {
+      "project_name": "fin_Tech",
+      "short_description": "A backend financial data service providing APIs for transaction processing, report generation, and data retrieval, backed by a PostgreSQL database with structured schema design.",
+      "target_resume_profiles": [
+        "Backend / Platform Engineer",
+        "Data / Search / Database Engineer",
+        "Software Engineer Core"
+      ],
+      "tech_stack": ["Python", "FastAPI", "PostgreSQL", "REST APIs", "data processing", "PDF/Excel workflows"],
+      "github_url": null,
+      "live_demo_url": null,
+      "screenshots": [],
+      "architecture_summary": "FastAPI service exposes financial data endpoints backed by a PostgreSQL database. Schema covers accounts, transactions, and reporting periods. Data processing layer handles aggregation and export to PDF or Excel formats. REST API is the primary integration surface.",
+      "candidate_personal_contribution": "Designed the database schema, implemented REST API endpoints, and built the data processing and export pipeline.",
+      "strongest_resume_bullets": [
+        "Built a financial data REST API in Python/FastAPI with PostgreSQL backing, covering transaction ingestion, aggregation, and report export.",
+        "Designed normalized relational schema for accounts and transactions with data integrity constraints.",
+        "Implemented PDF/Excel export pipeline for financial reporting, processing structured query results into formatted output."
+      ],
+      "measurable_impact": null,
+      "known_limitations": "No live demo or deployment. GitHub URL not yet linked. SQL schema examples and API documentation needed to support Data/Database profile claims. Content in this record is inferred and has not been verified by the candidate."
+    },
+    {
+      "project_name": "merkleNode",
+      "short_description": "A low-level Merkle tree implementation in C++ providing cryptographic proof generation and verification for arbitrary data sets.",
+      "target_resume_profiles": [
+        "Systems / Performance Engineer",
+        "Software Engineer Core"
+      ],
+      "tech_stack": ["C++", "CMake", "cryptographic hashing", "Merkle trees", "data structures"],
+      "github_url": null,
+      "live_demo_url": null,
+      "screenshots": [],
+      "architecture_summary": "Core C++ library implementing a Merkle tree data structure with configurable hash function support. Provides insert, proof generation, and proof verification operations. CMake build system. Designed for correctness and integration as a library component in larger systems.",
+      "candidate_personal_contribution": "Implemented the full Merkle tree library including tree construction, sibling path proof generation, and cryptographic verification logic.",
+      "strongest_resume_bullets": [
+        "Implemented a Merkle tree library in C++ with proof generation and verification, used as a core data integrity primitive.",
+        "Built hash-chained tree construction supporting arbitrary leaf data with configurable cryptographic hash functions.",
+        "Designed and verified Merkle inclusion proof logic with unit-level correctness testing."
+      ],
+      "measurable_impact": null,
+      "known_limitations": "No benchmark data available. GitHub URL not linked. Architecture writeup and test coverage notes needed to support Systems profile claims. Content in this record is inferred and has not been verified by the candidate."
+    },
+    {
+      "project_name": "Simple-Blockchain-Prototype",
+      "short_description": "A prototype blockchain implementation with smart contracts, on-chain data storage, and Merkle-proof-based data verification, built using Solidity and Hardhat.",
+      "target_resume_profiles": [
+        "Systems / Performance Engineer",
+        "Software Engineer Core"
+      ],
+      "tech_stack": ["Solidity", "Hardhat", "IPFS", "Merkle roots", "JavaScript", "Ethereum"],
+      "github_url": null,
+      "live_demo_url": null,
+      "screenshots": [],
+      "architecture_summary": "Solidity smart contracts define on-chain state and data verification logic using Merkle root commitments. Hardhat handles compilation, local chain deployment, and test execution. IPFS used for off-chain content addressing with on-chain hash anchoring. Merkle roots provide tamper-evident proof over data sets.",
+      "candidate_personal_contribution": "Wrote smart contracts, implemented Merkle root commitment logic, configured Hardhat deployment scripts, and integrated IPFS content addressing.",
+      "strongest_resume_bullets": [
+        "Built a blockchain prototype in Solidity with Merkle root commitments for tamper-evident on-chain data verification.",
+        "Integrated IPFS off-chain content addressing anchored to on-chain hashes, separating storage cost from data integrity proof.",
+        "Wrote and tested smart contracts using Hardhat with local chain deployment and scripted test coverage."
+      ],
+      "measurable_impact": null,
+      "known_limitations": "Prototype only; not deployed to a public testnet or mainnet. No live demo. GitHub URL not linked. Architecture explanation and test output needed to back Systems profile claims. Content in this record is inferred and has not been verified by the candidate."
+    }
+  ]
+}

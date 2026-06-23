@@ -33,7 +33,7 @@ Suggested file:
 
 ## Issue 2: Add Project Evidence Records
 
-Status: open
+Status: closed
 
 Problem:
 The dataset says project proof is required, but each project still needs structured evidence.
@@ -182,6 +182,17 @@ resume-agent-dataset/
     └── resume-requirement-matrix.csv
 ```
 
+## Issue 8: No Projects Mapped to 'Cloud / Infrastructure Engineer'
+
+Status: open
+
+Problem:
+The `Cloud / Infrastructure Engineer` developing profile has no projects mapped to it in `project-evidence.json`. An agent targeting this profile returns an empty project list.
+
+Needed:
+- Identify which existing projects have infrastructure relevance, or add a new project record covering cloud/infra work.
+- Add `Cloud / Infrastructure Engineer` to `target_resume_profiles` for qualifying projects.
+
 ## Priority Order
 
 1. Add `candidate-profile.json`.
@@ -191,3 +202,4 @@ resume-agent-dataset/
 5. Add JSON schema.
 6. Add agent task examples.
 7. Move files into the recommended folder structure.
+8. Map a project to the `Cloud / Infrastructure Engineer` profile.
