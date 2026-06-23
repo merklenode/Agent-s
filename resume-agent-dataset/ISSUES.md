@@ -29,7 +29,7 @@ Needed fields:
 
 Suggested file:
 
-- `candidate-profile.json`
+- `candidate/candidate-profile.json`
 
 ## Issue 2: Add Project Evidence Records
 
@@ -55,7 +55,7 @@ Needed fields per project:
 
 Suggested file:
 
-- `project-evidence.json`
+- `evidence/project-evidence.json`
 
 ## Issue 3: Add Resume Variant Definitions
 
@@ -87,7 +87,7 @@ Needed fields per variant:
 
 Suggested file:
 
-- `resume-variants.json`
+- `knowledge/resume-variants.json`
 
 ## Issue 4: Add Agent Task Examples
 
@@ -111,7 +111,7 @@ Suggested format:
 
 Suggested file:
 
-- `agent-task-examples.jsonl`
+- `training/agent-task-examples.jsonl`
 
 ## Issue 5: Add Validation Schema
 
@@ -150,11 +150,11 @@ Suggested scoring categories:
 
 Suggested file:
 
-- `completeness-rules.json`
+- `knowledge/completeness-rules.json`
 
 ## Issue 7: Separate Knowledge Base From Training Data
 
-Status: open
+Status: closed
 
 Problem:
 The current folder is a knowledge base. If training or evaluation data is added later, it should not be mixed into the same file.
@@ -195,10 +195,10 @@ Needed:
 
 ## Priority Order
 
-1. Add `candidate-profile.json`.
-2. Add `project-evidence.json`.
-3. Add `resume-variants.json`.
-4. Add `completeness-rules.json`.
+1. Add `candidate/candidate-profile.json`.
+2. Add `evidence/project-evidence.json`.
+3. Add `knowledge/resume-variants.json`.
+4. Add `knowledge/completeness-rules.json`.
 5. Add JSON schema.
 6. Add agent task examples.
 7. Move files into the recommended folder structure.

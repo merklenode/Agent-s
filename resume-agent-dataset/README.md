@@ -6,11 +6,28 @@ This folder is a resume-building knowledge dataset for an AI agent.
 
 It does not track companies, links, rankings, or application status. It keeps reusable information needed to build resumes across MNC, startup, AI, backend, platform, full-stack, systems, and data/search roles.
 
+## Directory Structure
+
+```
+resume-agent-dataset/
+├── README.md
+├── ISSUES.md
+├── knowledge/                          # machine-readable knowledge files for the agent
+│   └── resume-agent-knowledge-base.json
+├── candidate/                          # candidate personal profile (future: candidate-profile.json)
+├── evidence/                           # per-project evidence records (future: project-evidence.json)
+├── training/                           # agent task examples (future: agent-task-examples.jsonl)
+├── schema/                             # JSON schemas for validation (future: resume-agent-knowledge-base.schema.json)
+└── docs/                               # human-readable planning documents
+    ├── resume-agent-requirements.md
+    └── resume-requirement-matrix.csv
+```
+
 ## Files
 
-- `resume-agent-knowledge-base.json`: canonical structured knowledge base for an agent.
-- `resume-agent-requirements.md`: human-readable planning document.
-- `resume-requirement-matrix.csv`: spreadsheet-friendly skill and resume matrix.
+- `knowledge/resume-agent-knowledge-base.json`: canonical structured knowledge base for an agent.
+- `docs/resume-agent-requirements.md`: human-readable planning document.
+- `docs/resume-requirement-matrix.csv`: spreadsheet-friendly skill and resume matrix.
 - `ISSUES.md`: restructuring and data-completion issue list.
 
 ## Purpose
@@ -26,7 +43,7 @@ The dataset answers:
 
 ## Canonical Input For Agent
 
-Use `resume-agent-knowledge-base.json` as the main machine-readable source.
+Use `knowledge/resume-agent-knowledge-base.json` as the main machine-readable source.
 
 The agent should use:
 
