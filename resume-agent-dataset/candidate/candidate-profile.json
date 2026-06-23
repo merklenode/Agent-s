@@ -6,14 +6,11 @@
   "github": null,
   "linkedin": null,
   "portfolio": null,
-  "education": {
-    "institution": null,
-    "degree": null,
-    "major": null,
-    "graduation_date": null
-  },
+  "education": [],
   "work_authorization": null,
   "availability": null,
   "preferred_roles": [],
-  "preferred_locations": []
+  "preferred_locations": [],
+  "skills": [],
+  "work_experience": []
 }
