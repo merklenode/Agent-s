@@ -1,0 +1,338 @@
+{
+  "updated": "2026-06-23",
+  "dataset_name": "Resume Variants",
+  "purpose": "One variant definition per target role family. Tells the agent how to select and order content when the candidate specifies a target role.",
+  "variants": [
+    {
+      "id": "software-engineer-general",
+      "target_role_family": "Software Engineer — General",
+      "summary_style": "2-3 sentences covering CS fundamentals, backend and frontend breadth, and 1-2 strongest projects. Lead with what you built, not what you studied.",
+      "skills_to_prioritize": [
+        "TypeScript",
+        "Python",
+        "SQL/PostgreSQL",
+        "Git",
+        "REST APIs",
+        "API development",
+        "testing basics"
+      ],
+      "projects_to_prioritize": [
+        "Agent-s",
+        "fin_Tech",
+        "De_carSharing"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "merkleNode",
+        "Simple-Blockchain-Prototype"
+      ],
+      "ats_keywords": [
+        "software engineer",
+        "full-stack",
+        "TypeScript",
+        "Python",
+        "PostgreSQL",
+        "REST API",
+        "data structures",
+        "algorithms",
+        "Git",
+        "API development",
+        "clean code"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "technical_skills",
+        "projects",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Balanced and professional. Show breadth across backend, frontend, and data. Avoid over-specializing in any single domain."
+    },
+    {
+      "id": "backend-platform-engineer",
+      "target_role_family": "Backend / Platform Engineer",
+      "summary_style": "2-3 sentences focused on API design, data reliability, and backend architecture. Name specific backend tech (FastAPI, PostgreSQL) and a project that proves production-like thinking.",
+      "skills_to_prioritize": [
+        "Python",
+        "FastAPI",
+        "TypeScript",
+        "PostgreSQL",
+        "Prisma",
+        "Docker",
+        "REST APIs",
+        "testing",
+        "database design"
+      ],
+      "projects_to_prioritize": [
+        "fin_Tech",
+        "Agent-s",
+        "De_carSharing"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "Simple-Blockchain-Prototype",
+        "merkleNode"
+      ],
+      "ats_keywords": [
+        "backend engineer",
+        "platform engineer",
+        "REST API",
+        "microservices",
+        "FastAPI",
+        "Docker",
+        "PostgreSQL",
+        "API design",
+        "scalability",
+        "reliability",
+        "Python",
+        "TypeScript"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "technical_skills",
+        "projects",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Technical and reliability-focused. Emphasize architecture decisions, data design, and system correctness. Avoid vague product language."
+    },
+    {
+      "id": "ai-automation-engineer",
+      "target_role_family": "AI Automation / AI Product Engineer",
+      "summary_style": "2-3 sentences leading with AI tooling experience. Name the agent or automation system you built, what it does, and the outcome. Show LLM API fluency, not just awareness.",
+      "skills_to_prioritize": [
+        "TypeScript",
+        "Python",
+        "OpenAI API",
+        "agent workflows",
+        "tool use",
+        "workflow orchestration",
+        "GitHub automation"
+      ],
+      "projects_to_prioritize": [
+        "Agent-s"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "merkleNode",
+        "Simple-Blockchain-Prototype"
+      ],
+      "ats_keywords": [
+        "AI engineer",
+        "LLM",
+        "agent",
+        "automation",
+        "OpenAI",
+        "tool use",
+        "workflow",
+        "TypeScript",
+        "Python",
+        "AI product",
+        "prompt engineering",
+        "evaluation"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "projects",
+        "technical_skills",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Innovation-forward but grounded. Show you understand how to ship AI product features, not just call APIs. Avoid hype language without backing proof."
+    },
+    {
+      "id": "developer-tools-engineer",
+      "target_role_family": "Developer Tools / Developer Experience Engineer",
+      "summary_style": "2-3 sentences focused on what developer problem you solved and how. Lead with the tool, its impact on workflow, and the tech stack behind it.",
+      "skills_to_prioritize": [
+        "TypeScript",
+        "Node.js",
+        "Octokit/GitHub API",
+        "MCP-style workflows",
+        "automation scripts",
+        "CLI tooling",
+        "documentation"
+      ],
+      "projects_to_prioritize": [
+        "Agent-s"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "fin_Tech",
+        "De_carSharing",
+        "Simple-Blockchain-Prototype",
+        "merkleNode"
+      ],
+      "ats_keywords": [
+        "developer experience",
+        "DevEx",
+        "developer tools",
+        "CLI",
+        "GitHub API",
+        "automation",
+        "TypeScript",
+        "Node.js",
+        "tooling",
+        "workflow automation",
+        "open source",
+        "developer productivity"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "projects",
+        "technical_skills",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Developer-empathy focused. Show you think about workflow friction and ergonomics. Use concrete before/after framing where possible."
+    },
+    {
+      "id": "full-stack-product-engineer",
+      "target_role_family": "Frontend / Full-stack Product Engineer",
+      "summary_style": "2-3 sentences showing end-to-end product ownership. Mention a live or deployed product, the tech stack, and that you handled both frontend and backend.",
+      "skills_to_prioritize": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "REST APIs",
+        "responsive UI",
+        "forms",
+        "validation",
+        "accessibility basics"
+      ],
+      "projects_to_prioritize": [
+        "De_carSharing",
+        "fin_Tech",
+        "Agent-s"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "Simple-Blockchain-Prototype",
+        "merkleNode"
+      ],
+      "ats_keywords": [
+        "full-stack engineer",
+        "product engineer",
+        "React",
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "UI/UX",
+        "frontend",
+        "backend",
+        "web application",
+        "shipped product"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "projects",
+        "technical_skills",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Product-ownership focused. Show what shipped and what users could do with it. Tie features to user value, not just technical implementation."
+    },
+    {
+      "id": "systems-blockchain-engineer",
+      "target_role_family": "Systems / Performance / Blockchain Engineer",
+      "summary_style": "2-3 sentences leading with low-level or blockchain depth. Name the systems concept or blockchain stack and link it to a concrete project.",
+      "skills_to_prioritize": [
+        "C++",
+        "CMake",
+        "WebAssembly",
+        "Solidity",
+        "Hardhat",
+        "IPFS",
+        "Merkle roots",
+        "distributed systems"
+      ],
+      "projects_to_prioritize": [
+        "Simple-Blockchain-Prototype",
+        "merkleNode",
+        "Agent-s"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "fin_Tech",
+        "De_carSharing"
+      ],
+      "ats_keywords": [
+        "systems engineer",
+        "blockchain",
+        "Solidity",
+        "C++",
+        "distributed systems",
+        "smart contracts",
+        "Ethereum",
+        "performance",
+        "IPFS",
+        "WebAssembly",
+        "Merkle tree",
+        "cryptography"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "technical_skills",
+        "projects",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Technical depth and precision. Be specific about low-level concepts and implementation choices. Avoid product-speak — this audience values correctness and rigor."
+    },
+    {
+      "id": "data-search-engineer",
+      "target_role_family": "Data / Search / Database Engineer",
+      "summary_style": "2-3 sentences centered on data handling and SQL expertise. Mention schema design, search or retrieval work, and which project demonstrates database-backed application depth.",
+      "skills_to_prioritize": [
+        "PostgreSQL",
+        "SQL",
+        "data processing",
+        "backend APIs",
+        "retrieval/search",
+        "schema design",
+        "indexing",
+        "vector database awareness"
+      ],
+      "projects_to_prioritize": [
+        "fin_Tech",
+        "De_carSharing",
+        "Agent-s"
+      ],
+      "projects_to_avoid_or_downplay": [
+        "Simple-Blockchain-Prototype",
+        "merkleNode"
+      ],
+      "ats_keywords": [
+        "data engineer",
+        "SQL",
+        "PostgreSQL",
+        "database design",
+        "search",
+        "indexing",
+        "retrieval",
+        "ETL",
+        "data pipeline",
+        "schema design",
+        "vector database",
+        "backend"
+      ],
+      "section_order": [
+        "header",
+        "summary",
+        "technical_skills",
+        "projects",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "tone": "Analytical and data-precision focused. Emphasize schema quality, data integrity, and query efficiency. Show you think about data modeling, not just CRUD."
+    }
+  ]
+}
