@@ -36,7 +36,7 @@ interface RepoRecord {
   repo_name: string;
   full_name: string;
   github_url: string;
-  visibility: "public" | "private" | "internal";
+  visibility: "public" | "private";
   is_fork: boolean;
   is_archived: boolean;
   description: string;
@@ -347,7 +347,7 @@ function fetchRootTree(
 
 function fetchRecentCommitCount(repoName: string, warnings: string[]): number {
   const commits = ghRun<GhCommit[]>(
-    ["api", `repos/${OWNER}/${repoName}/commits?per_page=10`],
+    ["api", `repos/${OWNER}/${repoName}/commits?per_page=100`],
     warnings
   );
   return commits?.length ?? 0;
@@ -389,7 +389,7 @@ const README_FRAMEWORK_PATTERNS: Array<[RegExp, string]> = [
   [/\bgRPC\b/i, "gRPC"],
 ];
 
-function detectFrameworks(readmeExcerpt: string, dependencyFiles: string[]): string[] {
+function detectFrameworks(readmeExcerpt: string, dependencyFiles: string[], toolsDetected: string[]): string[] {
   const found = new Set<string>();
 
   for (const [pattern, name] of README_FRAMEWORK_PATTERNS) {
@@ -397,16 +397,11 @@ function detectFrameworks(readmeExcerpt: string, dependencyFiles: string[]): str
   }
 
   if (dependencyFiles.includes("Cargo.toml")) found.add("Rust / Cargo");
-  if (dependencyFiles.includes("CMakeLists.txt")) found.add("CMake");
+  if (toolsDetected.includes("CMake")) found.add("CMake");
   if (dependencyFiles.includes("go.mod")) found.add("Go modules");
-  if (
-    dependencyFiles.includes("hardhat.config.ts") ||
-    dependencyFiles.includes("hardhat.config.js")
-  ) {
-    found.add("Hardhat");
-  }
-  if (dependencyFiles.includes("foundry.toml")) found.add("Foundry");
-  if (dependencyFiles.includes("anchor.toml")) found.add("Anchor");
+  if (toolsDetected.includes("Hardhat")) found.add("Hardhat");
+  if (toolsDetected.includes("Foundry")) found.add("Foundry");
+  if (toolsDetected.includes("Anchor")) found.add("Anchor");
 
   return Array.from(found).sort();
 }
@@ -539,7 +534,7 @@ function validateOutput(data: GithubEvidenceOutput): void {
     if (!repo.full_name?.includes("/")) {
       errors.push(`full_name malformed: ${repo.full_name}`);
     }
-    if (!["public", "private", "internal"].includes(repo.visibility)) {
+    if (!["public", "private"].includes(repo.visibility)) {
       errors.push(`invalid visibility '${repo.visibility}' in ${repo.repo_name}`);
     }
     if (!["low", "medium", "high"].includes(repo.resume_evidence_signals?.confidence)) {
@@ -582,7 +577,7 @@ function extract(): void {
     const readme = fetchReadme(repoName, warnings);
     const tree = fetchRootTree(repoName, branch, warnings);
     const recentCommitCount = fetchRecentCommitCount(repoName, warnings);
-    const frameworks = detectFrameworks(readme.plain_text_excerpt, tree.dependencyFiles);
+    const frameworks = detectFrameworks(readme.plain_text_excerpt, tree.dependencyFiles, tree.toolsDetected);
     const signals = buildResumeSignals(
       repo.primaryLanguage?.name ?? null,
       languages,

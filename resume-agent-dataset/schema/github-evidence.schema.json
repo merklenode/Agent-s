@@ -68,7 +68,7 @@
         "github_url": { "type": "string", "format": "uri" },
         "visibility": {
           "type": "string",
-          "enum": ["public", "private", "internal"]
+          "enum": ["public", "private"]
         },
         "is_fork": { "type": "boolean" },
         "is_archived": { "type": "boolean" },
