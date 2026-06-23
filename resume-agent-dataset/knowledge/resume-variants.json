@@ -43,8 +43,8 @@
         "summary",
         "technical_skills",
         "projects",
-        "education",
         "experience",
+        "education",
         "proof"
       ],
       "tone": "Balanced and professional. Show breadth across backend, frontend, and data. Avoid over-specializing in any single domain."
@@ -161,7 +161,9 @@
       ],
       "projects_to_avoid_or_downplay": [
         "fin_Tech",
-        "De_carSharing"
+        "De_carSharing",
+        "Simple-Blockchain-Prototype",
+        "merkleNode"
       ],
       "ats_keywords": [
         "developer experience",
