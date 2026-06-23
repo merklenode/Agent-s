@@ -1,4 +1,4 @@
 node_modules/
 dist/
 *.tsbuildinfo
-resume-agent-dataset/evidence/github-evidence.json
+generated/

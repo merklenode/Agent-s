@@ -93,7 +93,7 @@ Both commands should exit 0 and report the file as valid.
 
 ## GitHub Evidence Extractor
 
-`evidence/github-evidence.json` is **generated automatically** from the GitHub API. It is the raw technical source layer for the resume agent. Do not edit it by hand — run the extractor to refresh it.
+`../generated/github-evidence/github-evidence.json` is **generated automatically** from the GitHub API. It is the raw technical source layer for the resume agent. Do not edit it by hand — run the extractor to refresh it.
 
 `evidence/project-evidence.json` is the **curated, human-reviewed** file. The extractor never touches it.
 
@@ -114,7 +114,7 @@ pnpm install
 # Fetch all merklenode repositories and extract evidence
 pnpm github:evidence
 
-# Validate the existing github-evidence.json without fetching GitHub
+# Validate the existing generated GitHub evidence without fetching GitHub
 pnpm github:evidence:check
 ```
 
@@ -123,7 +123,7 @@ pnpm github:evidence:check
 2. Fetch all accessible repos for `merklenode` (up to 1000, including private).
 3. For each repo, fetch: language breakdown, README, root file tree, and recent commit count.
 4. Detect dependency files, tools, frameworks, and resume-relevant keywords.
-5. Write `evidence/github-evidence.json`.
+5. Write `generated/github-evidence/github-evidence.json`.
 6. Print a summary with repo count and warning count.
 
 Missing READMEs, empty repos, or API errors are recorded as `extraction_warnings` on the affected repo record and never crash the full run.
@@ -145,7 +145,7 @@ Missing READMEs, empty repos, or API errors are recorded as `extraction_warnings
 ```sh
 npx ajv-cli validate \
   -s schema/github-evidence.schema.json \
-  -d evidence/github-evidence.json
+  -d ../generated/github-evidence/github-evidence.json
 ```
 
 ### Implementation notes
@@ -158,6 +158,6 @@ npx ajv-cli validate \
 
 **Two-layer validation.** Structural validation runs inline (no external deps) after each extraction. The JSON Schema file (`github-evidence.schema.json`) enables independent validation by the resume agent or CI.
 
-**Field naming: `repo_name` vs `project_name`.** `github-evidence.json` uses `repo_name` (the raw GitHub repository name). `project-evidence.json` uses `project_name` (a curated human label). These are intentionally different. A future review/merge workflow will map between them.
+**Field naming: `repo_name` vs `project_name`.** `generated/github-evidence/github-evidence.json` uses `repo_name` (the raw GitHub repository name). `project-evidence.json` uses `project_name` (a curated human label). These are intentionally different. A future review/merge workflow will map between them.
 
-**Mapping to `project-evidence.json`.** In v1, the extractor writes only to `github-evidence.json`. A future step (outside this script) should allow a human reviewer to promote specific GitHub facts into `project-evidence.json` as curated resume bullets.
+**Mapping to `project-evidence.json`.** In v1, the extractor writes only to `generated/github-evidence/github-evidence.json`. A future step (outside this script) should allow a human reviewer to promote specific GitHub facts into `project-evidence.json` as curated resume bullets.

@@ -1,11 +1,11 @@
 import { spawnSync } from "node:child_process";
-import { existsSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, writeFileSync, readFileSync, mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 
 const OWNER = "merklenode";
 const SCRIPT_DIR = dirname(__filename);
 const REPO_ROOT = resolve(SCRIPT_DIR, "..");
-const OUTPUT_PATH = resolve(REPO_ROOT, "resume-agent-dataset/evidence/github-evidence.json");
+const OUTPUT_PATH = resolve(REPO_ROOT, "generated/github-evidence/github-evidence.json");
 const PROTECTED_PATH = resolve(REPO_ROOT, "resume-agent-dataset/evidence/project-evidence.json");
 
 // ---------------------------------------------------------------------------
@@ -642,6 +642,7 @@ function extract(): void {
     process.exit(1);
   }
 
+  mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
   writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
   console.log(`\nOutput written: ${OUTPUT_PATH}`);
 
