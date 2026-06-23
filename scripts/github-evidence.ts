@@ -73,7 +73,7 @@ interface GhLanguage {
 }
 
 interface GhTopic {
-  topic: { name: string };
+  topic: { name: string } | null;
 }
 
 interface GhBranchRef {
@@ -88,7 +88,7 @@ interface GhRepoListItem {
   isArchived: boolean;
   url: string;
   primaryLanguage: GhLanguage | null;
-  repositoryTopics: GhTopic[];
+  repositoryTopics: GhTopic[] | null;
   defaultBranchRef: GhBranchRef | null;
   homepageUrl: string | null;
   createdAt: string;
@@ -185,6 +185,13 @@ function listRepos(warnings: string[]): GhRepoListItem[] {
     process.exit(1);
   }
   return result;
+}
+
+function normalizeTopics(topics: GhRepoListItem["repositoryTopics"]): string[] {
+  if (!Array.isArray(topics)) return [];
+  return topics
+    .map((item) => item.topic?.name)
+    .filter((name): name is string => Boolean(name));
 }
 
 // ---------------------------------------------------------------------------
@@ -598,7 +605,7 @@ function extract(): void {
       is_fork: repo.isFork,
       is_archived: repo.isArchived,
       description: repo.description ?? "",
-      topics: repo.repositoryTopics.map((t) => t.topic.name),
+      topics: normalizeTopics(repo.repositoryTopics),
       homepage_url: repo.homepageUrl,
       default_branch: branch,
       primary_language: repo.primaryLanguage?.name ?? null,
