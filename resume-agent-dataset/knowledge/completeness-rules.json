@@ -1,0 +1,209 @@
+{
+  "updated": "2026-06-23",
+  "purpose": "Completeness scoring rules for the resume agent. The agent uses these rules to score available candidate data, decide whether to generate a draft or ask follow-up questions, and produce a readiness report before generating any resume.",
+  "scoring_formula": "total_score = Σ(category_score × weight) / 100, where weights sum to 100",
+
+  "categories": [
+    {
+      "id": "personal_profile",
+      "label": "Personal Profile",
+      "weight": 20,
+      "description": "Contact and identity information required for any resume header.",
+      "fields": [
+        { "id": "full_name",      "label": "Full name",                   "points": 20, "critical": true  },
+        { "id": "email",          "label": "Email address",               "points": 20, "critical": true  },
+        { "id": "github_url",     "label": "GitHub profile URL",          "points": 20, "critical": true  },
+        { "id": "phone",          "label": "Phone number",                "points": 15, "critical": false },
+        { "id": "location",       "label": "City or region",              "points": 10, "critical": false },
+        { "id": "linkedin_url",   "label": "LinkedIn URL",                "points": 10, "critical": false },
+        { "id": "portfolio_url",  "label": "Portfolio or personal site",  "points":  5, "critical": false }
+      ],
+      "scoring_note": "Category score = sum of points for present fields. Maximum is 100 (all fields present). Missing a critical field puts the resume at not_ready regardless of total score.",
+      "follow_up_questions": {
+        "full_name":     "What is your full name as it should appear on your resume?",
+        "email":         "What is your professional email address?",
+        "github_url":    "What is your GitHub profile URL?",
+        "phone":         "What phone number should appear on your resume?",
+        "location":      "What city or region should appear on your resume?",
+        "linkedin_url":  "What is your LinkedIn profile URL?",
+        "portfolio_url": "Do you have a personal site or portfolio URL to include?"
+      }
+    },
+
+    {
+      "id": "project_proof",
+      "label": "Project Proof",
+      "weight": 25,
+      "description": "Structured evidence for each project listed on the resume. Scored per project; the category score is the average of the top 3 project scores (or all projects if fewer than 3 exist).",
+      "fields_per_project": [
+        { "id": "project_name",      "label": "Project name",                     "points": 15, "critical": true  },
+        { "id": "tech_stack",        "label": "Tech stack",                       "points": 15, "critical": true  },
+        { "id": "resume_bullets",    "label": "2-3 resume bullets",               "points": 25, "critical": true  },
+        { "id": "github_url",        "label": "GitHub repository URL",            "points": 20, "critical": false },
+        { "id": "what_you_built",    "label": "What you personally built",        "points": 15, "critical": false },
+        { "id": "architecture_note", "label": "Architecture or key design note",  "points": 10, "critical": false }
+      ],
+      "minimum_projects_for_draft": 1,
+      "minimum_projects_for_application_ready": 2,
+      "scoring_note": "Score each project independently (sum of points for present fields, max 100). Category score = average of top 3 project scores. Zero projects = category score of 0. Missing resume_bullets on any project is the most common reason for a low score here. Note: github_url is not critical for scoring purposes but is required to reach application_ready.",
+      "follow_up_questions": {
+        "project_name":      "What projects should appear on your resume?",
+        "tech_stack":        "What technologies did you use in {project_name}?",
+        "resume_bullets":    "What are the 2-3 strongest things you built or achieved in {project_name}?",
+        "github_url":        "Is there a GitHub repository link for {project_name}?",
+        "what_you_built":    "What did you personally own and build in {project_name}?",
+        "architecture_note": "Can you describe the architecture or a key design decision in {project_name} in one sentence?"
+      }
+    },
+
+    {
+      "id": "role_targeting",
+      "label": "Role Targeting",
+      "weight": 20,
+      "description": "How clearly the resume is aimed at a specific role family and company type. Affects which projects, skills, and keywords the agent emphasises.",
+      "fields": [
+        { "id": "target_profile",    "label": "Target role profile",                           "points": 35, "critical": true  },
+        { "id": "company_type",      "label": "Target company type (MNC, startup, AI company)", "points": 25, "critical": false },
+        { "id": "ats_keywords_list", "label": "ATS keywords for this role",                    "points": 25, "critical": false },
+        { "id": "section_priority",  "label": "Section order preference",                      "points": 15, "critical": false }
+      ],
+      "scoring_note": "Category score = sum of points for present fields. target_profile is the only critical field. Without it the agent cannot choose which developing_profile to align to.",
+      "follow_up_questions": {
+        "target_profile":    "Which role are you targeting? (e.g. backend engineer, AI product engineer, full-stack engineer)",
+        "company_type":      "Are you primarily targeting MNCs, startups, or AI companies for this resume?",
+        "ats_keywords_list": "Are there specific job description keywords you want to optimise for?",
+        "section_priority":  "Should projects come before or after the skills section in this resume?"
+      }
+    },
+
+    {
+      "id": "skills_evidence",
+      "label": "Skills Evidence",
+      "weight": 20,
+      "description": "Whether claimed skills are backed by project or work evidence. Prevents listing skills with nothing to point to.",
+      "fields": [
+        { "id": "skills_list",                  "label": "Full skills list",                                  "points": 25, "critical": true  },
+        { "id": "skills_with_project_backing",  "label": "Skills with at least one project reference",       "points": 50, "critical": true  },
+        { "id": "skills_with_honest_level",     "label": "Skills marked with honest proficiency where needed", "points": 25, "critical": false }
+      ],
+      "scoring_note": "skills_list score is binary (present = 25 points). skills_with_project_backing score = (count of skills backed by a project / total skills claimed) * 50. A skills list with no project references scores 0 for that field. skills_with_honest_level is present if the candidate has flagged at least one skill as beginner or intermediate.",
+      "follow_up_questions": {
+        "skills_list":                 "What are the main technical skills you want to list on your resume?",
+        "skills_with_project_backing": "Which of your listed skills can you back up with a specific project or work example?",
+        "skills_with_honest_level":    "Are there any skills where you would describe yourself as a beginner or intermediate rather than proficient?"
+      }
+    },
+
+    {
+      "id": "links_demos",
+      "label": "Links and Demos",
+      "weight": 10,
+      "description": "Live URLs, screenshots, and demo evidence that make projects verifiable. No field here is critical — absence is a warning, not a hard blocker — but low scores meaningfully reduce the overall application_ready score.",
+      "fields": [
+        { "id": "at_least_one_github_url",  "label": "At least one project GitHub URL",  "points": 30, "critical": false },
+        { "id": "at_least_one_live_demo",   "label": "At least one live project URL",    "points": 40, "critical": false },
+        { "id": "screenshots_available",    "label": "Screenshots or visual proof",      "points": 20, "critical": false },
+        { "id": "readme_quality",           "label": "GitHub README quality noted",      "points": 10, "critical": false }
+      ],
+      "scoring_note": "Category score = sum of points for present or confirmed fields. The at_least_one_live_demo field alone is worth 40 points; missing it is the single biggest drag on this category.",
+      "follow_up_questions": {
+        "at_least_one_github_url":  "Which of your projects have public GitHub repositories?",
+        "at_least_one_live_demo":   "Do any of your projects have a live URL or deployed demo link?",
+        "screenshots_available":    "Do you have screenshots or a video walkthrough for any project?",
+        "readme_quality":           "Do your GitHub READMEs include a project description, setup steps, and screenshots?"
+      }
+    },
+
+    {
+      "id": "ats_readiness",
+      "label": "ATS Readiness",
+      "weight": 5,
+      "description": "Whether the resume content is likely to pass applicant tracking system filters. Checked last — content quality matters more than ATS optimisation.",
+      "fields": [
+        { "id": "keywords_in_skills",    "label": "Role-relevant keywords in technical skills section",   "points": 40, "critical": false },
+        { "id": "education_complete",    "label": "Education section complete with degree and dates",     "points": 25, "critical": false },
+        { "id": "consistent_dates",      "label": "All dates in a consistent standard format",            "points": 20, "critical": false },
+        { "id": "single_column_layout",  "label": "Single-column layout confirmed (no ATS-breaking tables)", "points": 15, "critical": false }
+      ],
+      "scoring_note": "Category score = sum of points for confirmed fields. None are critical — a low ATS score is a recommendation, not a blocker.",
+      "follow_up_questions": {
+        "keywords_in_skills":   "Which keywords from target job descriptions should be matched in your skills section?",
+        "education_complete":   "What is your degree, institution, and expected graduation date?",
+        "consistent_dates":     "Do all your project and work dates follow a consistent format (e.g. Month Year)?",
+        "single_column_layout": "Will this resume use a single-column layout, or a multi-column design?"
+      }
+    }
+  ],
+
+  "readiness_levels": {
+    "not_ready": {
+      "max_total_score": 39,
+      "description": "Insufficient data to generate a useful resume. Ask follow-up questions before generating anything.",
+      "agent_action": "ask_follow_up_questions",
+      "requirements": [
+        "total weighted score below 40",
+        "OR any critical field in personal_profile is missing",
+        "OR zero projects are provided"
+      ]
+    },
+    "draft_ready": {
+      "min_total_score": 40,
+      "max_total_score": 79,
+      "description": "Enough data to produce a rough draft with visible gaps. Generate the draft and include a gap report highlighting what is missing.",
+      "agent_action": "generate_draft_with_gap_report",
+      "requirements": [
+        "total weighted score between 40 and 79",
+        "personal_profile category score >= 50",
+        "at least 1 project with project_name, tech_stack, and at least 1 resume bullet",
+        "target_profile known"
+      ]
+    },
+    "application_ready": {
+      "min_total_score": 80,
+      "description": "Enough data to produce a polished resume ready to submit to employers.",
+      "agent_action": "generate_final_resume",
+      "requirements": [
+        "total weighted score >= 80",
+        "personal_profile category score >= 80",
+        "at least 2 projects with full project_name, tech_stack, and resume_bullets",
+        "role_targeting category score >= 60",
+        "skills_evidence category score >= 60",
+        "no critical fields missing across any category",
+        "at least one github_url present in project_proof"
+      ]
+    }
+  },
+
+  "scoring_output_format": {
+    "description": "The agent must produce this structure before generating any resume. Use it to communicate the current state to the user and decide which action to take.",
+    "fields": [
+      "total_score",
+      "readiness_level",
+      "category_scores",
+      "missing_critical_fields",
+      "recommended_follow_up_questions",
+      "agent_action"
+    ],
+    "example": {
+      "total_score": 60,
+      "readiness_level": "draft_ready",
+      "category_scores": {
+        "personal_profile": 75,
+        "project_proof":    55,
+        "role_targeting":   70,
+        "skills_evidence":  60,
+        "links_demos":      30,
+        "ats_readiness":    40
+      },
+      "missing_critical_fields": [
+        "project_proof.resume_bullets (Agent-s)",
+        "project_proof.tech_stack (fin_Tech)"
+      ],
+      "recommended_follow_up_questions": [
+        "What are the 2-3 strongest things you built or achieved in Agent-s?",
+        "What technologies did you use in fin_Tech?"
+      ],
+      "agent_action": "generate_draft_with_gap_report"
+    }
+  }
+}
