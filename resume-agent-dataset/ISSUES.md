@@ -184,10 +184,10 @@ resume-agent-dataset/
 
 ## Priority Order
 
-1. Add `candidate-profile.json`.
-2. Add `project-evidence.json`.
-3. Add `resume-variants.json`.
-4. Add `completeness-rules.json`.
+1. Add `candidate/candidate-profile.json`.
+2. Add `evidence/project-evidence.json`.
+3. Add `knowledge/resume-variants.json`.
+4. Add `knowledge/completeness-rules.json`.
 5. Add JSON schema.
 6. Add agent task examples.
 7. Move files into the recommended folder structure.
