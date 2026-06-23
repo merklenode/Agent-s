@@ -72,4 +72,4 @@ check-jsonschema --schemafile schema/resume-agent-knowledge-base.schema.json res
 
 Both commands should exit 0 and report the file as valid.
 
-**Project name cross-reference:** Project names in `developing_profiles[*].proof_to_add` should match entries in `highest_priority_projects`. Once `project-evidence.json` exists (Issue #2), they should also match its `name` fields. This rule is documented by convention; JSON Schema cannot enforce it across separate files.
+**Project name cross-reference:** Project names in `developing_profiles[*].proof_to_add` may reference entries from `highest_priority_projects`. Once `project-evidence.json` exists (Issue #2), they should also match its `name` fields. This rule is documented by convention; JSON Schema cannot enforce it across separate files.
