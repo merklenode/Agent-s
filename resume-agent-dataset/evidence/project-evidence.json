@@ -19,7 +19,7 @@
       "candidate_personal_contribution": "Designed the full dataset schema including profile definitions, evidence record structure, and resume section requirements. Authored the knowledge base and project evidence records. Defined the agent task interface and multi-profile targeting logic.",
       "strongest_resume_bullets": [
         "Designed a structured dataset schema for a multi-profile resume agent, covering 8 developer profiles and 5 priority projects with per-project evidence records.",
-        "Built a profile-driven evidence selection model allowing one project to map to multiple resume variants with distinct bullet sets.",
+        "Built a profile-driven evidence selection model allowing one project to map to multiple resume profiles from a single shared evidence record.",
         "Authored agent knowledge base and task examples consumed by an LLM agent to generate targeted resumes without manual editing."
       ],
       "measurable_impact": null,
@@ -45,7 +45,7 @@
         "Owned frontend-to-database delivery of core booking flow with TypeScript across the full stack."
       ],
       "measurable_impact": null,
-      "known_limitations": "No live deployment confirmed. GitHub URL not yet linked. Screenshots needed to support frontend/full-stack profile claims."
+      "known_limitations": "No live deployment confirmed. GitHub URL not yet linked. Screenshots needed to support frontend/full-stack profile claims. Content in this record is inferred and has not been verified by the candidate."
     },
     {
       "project_name": "fin_Tech",
@@ -67,7 +67,7 @@
         "Implemented PDF/Excel export pipeline for financial reporting, processing structured query results into formatted output."
       ],
       "measurable_impact": null,
-      "known_limitations": "No live demo or deployment. GitHub URL not yet linked. SQL schema examples and API documentation needed to support Data/Database profile claims."
+      "known_limitations": "No live demo or deployment. GitHub URL not yet linked. SQL schema examples and API documentation needed to support Data/Database profile claims. Content in this record is inferred and has not been verified by the candidate."
     },
     {
       "project_name": "merkleNode",
@@ -88,7 +88,7 @@
         "Designed and verified Merkle inclusion proof logic with unit-level correctness testing."
       ],
       "measurable_impact": null,
-      "known_limitations": "No benchmark data available. GitHub URL not linked. Architecture writeup and test coverage notes needed to support Systems profile claims."
+      "known_limitations": "No benchmark data available. GitHub URL not linked. Architecture writeup and test coverage notes needed to support Systems profile claims. Content in this record is inferred and has not been verified by the candidate."
     },
     {
       "project_name": "Simple-Blockchain-Prototype",
@@ -109,7 +109,7 @@
         "Wrote and tested smart contracts using Hardhat with local chain deployment and scripted test coverage."
       ],
       "measurable_impact": null,
-      "known_limitations": "Prototype only; not deployed to a public testnet or mainnet. No live demo. GitHub URL not linked. Architecture explanation and test output needed to back Systems profile claims."
+      "known_limitations": "Prototype only; not deployed to a public testnet or mainnet. No live demo. GitHub URL not linked. Architecture explanation and test output needed to back Systems profile claims. Content in this record is inferred and has not been verified by the candidate."
     }
   ]
 }
