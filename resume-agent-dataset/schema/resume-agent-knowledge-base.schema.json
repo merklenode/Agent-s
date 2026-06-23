@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "resume-agent-knowledge-base.schema.json",
+  "title": "Resume Agent Knowledge Base",
+  "description": "Validates resume-agent-knowledge-base.json. Enforces required keys, profile fields, allowed status values, and non-empty arrays.",
+  "type": "object",
+  "required": [
+    "updated",
+    "dataset_name",
+    "purpose",
+    "excluded_fields",
+    "developing_profiles",
+    "resume_sections",
+    "highest_priority_projects",
+    "main_missing_items"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "updated": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date of last update (YYYY-MM-DD). Format only; month/day ranges not validated."
+    },
+    "dataset_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "excluded_fields": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "developing_profiles": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/DevelopingProfile" },
+      "minItems": 1
+    },
+    "resume_sections": {
+      "$ref": "#/definitions/ResumeSections"
+    },
+    "highest_priority_projects": {
+      "$comment": "Future constraint: project names in developing_profiles[*].proof_to_add should match entries here or in project-evidence.json once that file exists. JSON Schema cannot enforce this cross-file rule today.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "main_missing_items": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "DevelopingProfile": {
+      "type": "object",
+      "required": [
+        "profile",
+        "target_identity",
+        "required_knowledge",
+        "required_skills",
+        "proof_to_add",
+        "special_notes",
+        "current_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_knowledge": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "required_skills": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "proof_to_add": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "special_notes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_status": {
+          "type": "string",
+          "enum": [
+            "Not started",
+            "In progress",
+            "Partially ready",
+            "Needs more proof",
+            "Needs demo/case study",
+            "Needs demo/docs",
+            "Needs cloud proof",
+            "Needs evidence details",
+            "Needs SQL/search proof",
+            "Ready",
+            "Complete"
+          ]
+        }
+      }
+    },
+    "ResumeSections": {
+      "type": "object",
+      "required": [
+        "header",
+        "summary",
+        "technical_skills",
+        "projects",
+        "experience",
+        "education",
+        "proof"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "header": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "summary": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "technical_skills": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "projects": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "experience": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "education": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "proof": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

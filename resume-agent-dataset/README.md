@@ -44,3 +44,32 @@ The agent should use:
 - Detailed project evidence: missing from this folder.
 - Finished resume examples: missing.
 - Training/evaluation examples: missing.
+
+## Validation
+
+The schema at `schema/resume-agent-knowledge-base.schema.json` (JSON Schema Draft 7) validates `resume-agent-knowledge-base.json`.
+
+It enforces:
+
+- All required top-level keys are present.
+- Each profile in `developing_profiles` has all required fields.
+- `current_status` is one of the allowed values.
+- No array field (`required_knowledge`, `required_skills`, `proof_to_add`, `excluded_fields`, etc.) is empty.
+- No unrecognised keys exist at the top level, in profiles, or in `resume_sections`.
+
+**Validate with Node.js (ajv-cli):**
+
+```sh
+npx ajv-cli validate -s schema/resume-agent-knowledge-base.schema.json -d resume-agent-knowledge-base.json
+```
+
+**Validate with Python (check-jsonschema):**
+
+```sh
+pip install check-jsonschema
+check-jsonschema --schemafile schema/resume-agent-knowledge-base.schema.json resume-agent-knowledge-base.json
+```
+
+Both commands should exit 0 and report the file as valid.
+
+**Project name cross-reference:** Project names in `developing_profiles[*].proof_to_add` may reference entries from `highest_priority_projects`. Once `project-evidence.json` exists (Issue #2), they should also match its `name` fields. This rule is documented by convention; JSON Schema cannot enforce it across separate files.
