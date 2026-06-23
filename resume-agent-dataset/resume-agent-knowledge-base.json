@@ -1,0 +1,96 @@
+{
+  "updated": "2026-06-23",
+  "dataset_name": "Resume Requirement Dataset",
+  "purpose": "Company-independent resume-building requirements filtered from MNC and startup research.",
+  "excluded_fields": [
+    "company",
+    "career_url",
+    "rank",
+    "application_status"
+  ],
+  "developing_profiles": [
+    {
+      "profile": "Software Engineer Core",
+      "target_identity": "Entry-level software engineer with strong CS fundamentals and project proof.",
+      "required_knowledge": ["DSA", "CS fundamentals", "clean coding", "debugging", "testing basics", "REST APIs", "databases"],
+      "required_skills": ["TypeScript", "Python", "Git", "SQL/PostgreSQL", "API development"],
+      "proof_to_add": ["2-3 strong engineering projects", "GitHub links", "measurable bullets where true"],
+      "special_notes": "Base profile for both MNC and startup applications.",
+      "current_status": "Partially ready"
+    },
+    {
+      "profile": "Backend / Platform Engineer",
+      "target_identity": "Engineer who can build reliable APIs, data workflows, and platform services.",
+      "required_knowledge": ["REST APIs", "database design", "reliability", "scalability", "system design basics"],
+      "required_skills": ["Python", "TypeScript", "FastAPI", "PostgreSQL", "Prisma/ORM", "Docker", "testing"],
+      "proof_to_add": ["API architecture", "database schema", "endpoint examples", "reliability notes"],
+      "special_notes": "Strong for backend, SaaS, fintech, cloud, and platform teams.",
+      "current_status": "Needs more proof"
+    },
+    {
+      "profile": "AI Automation / AI Product Engineer",
+      "target_identity": "Engineer who can build AI tooling, agent workflows, and product features around LLM APIs.",
+      "required_knowledge": ["LLM APIs", "agents", "tool use", "workflow automation", "evaluation basics", "safety-aware implementation"],
+      "required_skills": ["OpenAI API or similar", "TypeScript", "Python", "workflow orchestration", "GitHub automation"],
+      "proof_to_add": ["Agent-s demo", "AI project case study", "screenshots", "automation outcome"],
+      "special_notes": "Important for AI startups and developer platform teams.",
+      "current_status": "Needs demo/case study"
+    },
+    {
+      "profile": "Developer Tools / Developer Experience Engineer",
+      "target_identity": "Builder of tools that improve developer workflows.",
+      "required_knowledge": ["developer workflows", "GitHub workflows", "CLI/web tooling", "documentation", "developer ergonomics"],
+      "required_skills": ["TypeScript", "Node.js", "Octokit/GitHub API", "MCP-style workflows", "automation scripts"],
+      "proof_to_add": ["tool demo", "documentation", "before/after workflow", "real usage example"],
+      "special_notes": "Strong fit for devtools, AI coding tools, and open-source-oriented roles.",
+      "current_status": "Needs demo/docs"
+    },
+    {
+      "profile": "Cloud / Infrastructure Engineer",
+      "target_identity": "Software engineer with cloud, deployment, infrastructure, and reliability awareness.",
+      "required_knowledge": ["cloud basics", "deployment", "containers", "logs", "monitoring", "reliability", "distributed systems basics"],
+      "required_skills": ["Docker", "backend deployment", "PostgreSQL hosting", "AWS/Azure/GCP concepts"],
+      "proof_to_add": ["deployed project", "deployment architecture", "logs/monitoring notes"],
+      "special_notes": "Cloud keywords should be honest and backed by proof.",
+      "current_status": "Needs cloud proof"
+    },
+    {
+      "profile": "Frontend / Full-stack Product Engineer",
+      "target_identity": "Engineer who can ship user-facing product features across frontend and backend.",
+      "required_knowledge": ["React/Next.js", "UI state", "API integration", "auth flows", "frontend performance", "product quality"],
+      "required_skills": ["React", "Next.js", "TypeScript", "responsive UI", "forms", "validation", "accessibility basics"],
+      "proof_to_add": ["live portfolio", "screenshots", "frontend/backend ownership notes"],
+      "special_notes": "Startups value visible shipped product proof.",
+      "current_status": "Partially ready"
+    },
+    {
+      "profile": "Systems / Performance Engineer",
+      "target_identity": "Engineer with low-level, performance, blockchain, or infrastructure depth.",
+      "required_knowledge": ["C/C++", "OS/concurrency", "networking", "performance", "distributed systems", "hash/crypto concepts"],
+      "required_skills": ["C++", "CMake", "WebAssembly", "Solidity", "Hardhat", "IPFS", "Merkle roots"],
+      "proof_to_add": ["systems project proof", "benchmark notes", "architecture explanation"],
+      "special_notes": "Useful for systems, blockchain, embedded, infrastructure, and performance-heavy roles.",
+      "current_status": "Needs evidence details"
+    },
+    {
+      "profile": "Data / Search / Database Engineer",
+      "target_identity": "Engineer with strong data handling, SQL, search, and database-backed application experience.",
+      "required_knowledge": ["SQL", "schema design", "indexing basics", "data integrity", "search/retrieval", "vector database awareness"],
+      "required_skills": ["PostgreSQL", "data processing", "backend APIs", "PDF/Excel workflows", "retrieval/search basics"],
+      "proof_to_add": ["SQL evidence", "schema examples", "data pipeline notes", "search/vector demo"],
+      "special_notes": "Useful for database, backend, fintech, AI retrieval, and data engineering roles.",
+      "current_status": "Needs SQL/search proof"
+    }
+  ],
+  "resume_sections": {
+    "header": ["name", "email", "phone", "location", "GitHub", "LinkedIn", "portfolio"],
+    "summary": ["2-3 lines with strongest target profile", "backend + AI automation + project proof"],
+    "technical_skills": ["Languages", "Backend", "Frontend", "Databases", "AI/Automation", "Cloud/DevOps", "Tools", "Systems"],
+    "projects": ["project name", "role", "tech stack", "live link or GitHub", "architecture note", "2-3 strongest bullets", "what you personally built"],
+    "experience": ["internship/work details if available", "responsibilities", "technologies", "outcomes"],
+    "education": ["degree", "branch", "institution", "dates", "graduation timeline", "CGPA/percentage if useful"],
+    "proof": ["demos", "screenshots", "GitHub READMEs", "architecture notes", "case studies", "open-source contributions", "DSA profile"]
+  },
+  "highest_priority_projects": ["Agent-s", "De_carSharing", "fin_Tech", "merkleNode", "Simple-Blockchain-Prototype"],
+  "main_missing_items": ["live demos/screenshots", "project case studies", "DSA/interview proof", "open-source proof", "cloud/deployment proof", "SQL/search proof", "AI project demo"]
+}
