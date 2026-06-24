@@ -1,0 +1,128 @@
+// End-to-end demo: store and retrieve generated agent data in LocusGraph.
+//
+// Prerequisites:
+//   1. export LOCUSGRAPH_AGENT_SECRET=<your-agent-secret>
+//   2. export LOCUSGRAPH_GRAPH_ID=<your-graph-id>  (optional, default: default)
+//   3. pnpm github:evidence   (generates the evidence file this demo reads)
+//
+// Run:
+//   pnpm memory:demo
+
+import { existsSync, readFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import type { ContextId } from "./index.js";
+import {
+  createClientFromEnv,
+  storeMemory,
+  getMemoryContext,
+  listMemoryContexts,
+  retrieveMemories,
+} from "./index.js";
+
+const SCRIPT_DIR = dirname(__filename);
+const REPO_ROOT = resolve(SCRIPT_DIR, "../..");
+
+const EVIDENCE_PATH = resolve(REPO_ROOT, "generated/github-evidence/github-evidence.json");
+const CANDIDATE_PATH = resolve(REPO_ROOT, "resume-agent-dataset/candidate/candidate-profile.json");
+
+function log(msg: string): void {
+  process.stdout.write(`${msg}\n`);
+}
+
+async function main(): Promise<void> {
+  let session: ReturnType<typeof createClientFromEnv>;
+  try {
+    session = createClientFromEnv();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    process.stderr.write(`Error: ${message}\n`);
+    process.exit(1);
+  }
+
+  const { client, graphId } = session;
+  log(`Connected. Graph: ${graphId}`);
+
+  if (!existsSync(EVIDENCE_PATH)) {
+    process.stderr.write(
+      "GitHub evidence file not found. Run `pnpm github:evidence` first.\n"
+    );
+    process.exit(1);
+  }
+
+  const evidenceRaw = readFileSync(EVIDENCE_PATH, "utf-8");
+  const evidenceData = JSON.parse(evidenceRaw) as Record<string, unknown>;
+  log(`Loaded evidence: ${Object.keys(evidenceData).length} top-level keys`);
+
+  if (!existsSync(CANDIDATE_PATH)) {
+    process.stderr.write(
+      "Candidate profile not found. Expected at resume-agent-dataset/candidate/candidate-profile.json\n"
+    );
+    process.exit(1);
+  }
+  const candidateRaw = readFileSync(CANDIDATE_PATH, "utf-8");
+  const candidateData = JSON.parse(candidateRaw) as Record<string, unknown>;
+
+  log("\n-- Storing facts --");
+
+  await storeMemory(client, graphId, {
+    event_kind: "fact",
+    context_id: "fact:github_evidence",
+    source: "agent",
+    payload: { data: evidenceData },
+  });
+  log("Stored: fact:github_evidence");
+
+  await storeMemory(client, graphId, {
+    event_kind: "fact",
+    context_id: "fact:candidate_profile",
+    source: "agent",
+    payload: { data: candidateData },
+    related_to: ["fact:github_evidence"],
+  });
+  log("Stored: fact:candidate_profile (related_to: fact:github_evidence)");
+
+  await storeMemory(client, graphId, {
+    event_kind: "decision",
+    context_id: "decision:last_evidence_run",
+    source: "agent",
+    payload: {
+      data: {
+        ran_at: new Date().toISOString(),
+        owner: "merklenode",
+        scope: "all_repositories_including_private",
+      },
+    },
+    reinforces: ["fact:github_evidence"],
+  });
+  log("Stored: decision:last_evidence_run");
+
+  log("\n-- Retrieving fact:github_evidence --");
+  const ctx = await getMemoryContext(client, graphId, "fact:github_evidence");
+  if (ctx === null) {
+    log("Context not found (returned null — this is expected on first run if the store has not synced yet)");
+  } else {
+    log(`Retrieved: ${JSON.stringify(ctx).slice(0, 120)}...`);
+  }
+
+  log("\n-- Bulk retrieve --");
+  const ids: ContextId[] = [
+    "fact:github_evidence",
+    "fact:candidate_profile",
+    "fact:nonexistent_context",
+  ];
+  const results = await retrieveMemories(client, graphId, ids);
+  results.forEach((r, i) => {
+    log(`  ${ids[i]}: ${r === null ? "null (not found)" : "found"}`);
+  });
+
+  log("\n-- Listing fact contexts (limit 50) --");
+  const allFacts = await listMemoryContexts(client, graphId, "fact", 50);
+  log(`Found ${allFacts.length} fact context(s)`);
+
+  log("\nDone.");
+}
+
+main().catch((err: unknown) => {
+  process.stderr.write(`Unhandled error: ${err instanceof Error ? err.message : String(err)}\n`);
+  process.exit(1);
+});

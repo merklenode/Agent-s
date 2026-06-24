@@ -15,7 +15,7 @@ import {
   type LocusWorkflowConfig,
   type ContextResult,
   type InsightResult,
-} from "../locus-retrieval";
+} from "../locus-retrieval/index.js";
 
 // ---------------------------------------------------------------------------
 // Mock helpers

@@ -1,7 +1,7 @@
-import type { LocusGraphClient, StoreMemoryParams } from './types.js';
+import type { LocusGraphMemoryClient, StoreMemoryParams } from './types.js';
 
 export async function storeMemory<T extends Record<string, unknown>>(
-  client: LocusGraphClient,
+  client: LocusGraphMemoryClient,
   graphId: string,
   params: StoreMemoryParams<T>
 ): Promise<void> {

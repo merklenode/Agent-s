@@ -8,18 +8,41 @@ import {
   storeEvidenceEvents,
   type GithubEvidenceFile,
   type StoreSummary,
-} from '../store-github-evidence';
-import type { LocusGraphClient } from '../memory/types';
+} from '../github-evidence-store/index.js';
+import type { LocusGraphMemoryClient } from '../memory/types';
 
 // ---------------------------------------------------------------------------
 // Mock helpers
 // ---------------------------------------------------------------------------
 
-function makeMockClient(overrides?: Partial<LocusGraphClient>): LocusGraphClient {
+function makeMockClient(overrides?: Partial<LocusGraphMemoryClient>): LocusGraphMemoryClient {
   return {
     storeEvent: async (_params) => ({}),
-    getContext: async (_params) => ({}),
-    listContexts: async (_params) => [],
+    getContext: async (_params) => ({
+      context_id: 'fact:test',
+      context: {
+        context_id: 'fact:test',
+        context_type: 'fact',
+        context_name: 'test',
+        created_at: 0,
+        updated_at: 0,
+        reference_count: 0,
+      },
+      locus_id: 'locus_test',
+      payload: {},
+    }),
+    listContextTypes: async (_graphId, _options) => ({
+      context_types: [],
+      total: 0,
+      page: 0,
+      page_size: 0,
+    }),
+    listContextsByType: async (_contextType, _graphId, _options) => ({
+      contexts: [],
+      total: 0,
+      page: 0,
+      page_size: 0,
+    }),
     ...overrides,
   };
 }
@@ -154,7 +177,7 @@ describe('storeEvidenceEvents', () => {
   });
 
   it('first event is fact:github_evidence with correct payload', async () => {
-    const calls: Parameters<LocusGraphClient['storeEvent']>[0][] = [];
+    const calls: Parameters<LocusGraphMemoryClient['storeEvent']>[0][] = [];
     const client = makeMockClient({
       storeEvent: async (params) => { calls.push(params); return {}; },
     });
@@ -166,7 +189,7 @@ describe('storeEvidenceEvents', () => {
     assert.equal(first.context_id, 'fact:github_evidence');
     assert.equal(first.event_kind, 'fact');
     assert.equal(first.graph_id, 'graph-test');
-    assert.equal(first.source, 'pnpm github:evidence:store');
+    assert.equal(first.source, 'tool');
     assert.equal(
       (first.payload.data as Record<string, unknown>)['repository_count'],
       2
@@ -179,10 +202,14 @@ describe('storeEvidenceEvents', () => {
       (first.payload.data as Record<string, unknown>)['stored_at'],
       STORED_AT
     );
+    assert.equal(
+      (first.payload.data as Record<string, unknown>)['stored_by'],
+      'pnpm github:evidence:store'
+    );
   });
 
   it('second event is action:github_evidence_stored with reinforces link', async () => {
-    const calls: Parameters<LocusGraphClient['storeEvent']>[0][] = [];
+    const calls: Parameters<LocusGraphMemoryClient['storeEvent']>[0][] = [];
     const client = makeMockClient({
       storeEvent: async (params) => { calls.push(params); return {}; },
     });
