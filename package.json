@@ -7,7 +7,15 @@
   },
   "scripts": {
     "github:evidence": "tsx scripts/github-evidence.ts extract",
-    "github:evidence:check": "tsx scripts/github-evidence.ts check"
+    "github:evidence:check": "tsx scripts/github-evidence.ts check",
+    "locus:retrieval": "tsx scripts/locus-retrieval-cli.ts retrieve",
+    "locus:retrieval:check": "tsx scripts/locus-retrieval-cli.ts check",
+    "test": "tsx --tsconfig tsconfig.test.json --test scripts/__tests__/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc --project tsconfig.test.json"
+  },
+  "dependencies": {
+    "@locusgraph/client": "^0.2.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
