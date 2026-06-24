@@ -26,7 +26,7 @@ export async function listMemoryContexts(
   graphId: string,
   type?: EventKind,
   limit = 50
-): Promise<unknown[]> {
+): Promise<Record<string, unknown>[]> {
   return client.listContexts({
     graphId,
     ...(type !== undefined && { context_type: type }),

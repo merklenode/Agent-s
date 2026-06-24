@@ -63,11 +63,11 @@ export interface LocusGraphClient {
   getContext(params: {
     graphId: string;
     context_id: string;
-  }): Promise<unknown>;
+  }): Promise<Record<string, unknown>>;
 
   listContexts(params: {
     graphId: string;
     context_type?: EventKind;
     limit?: number;
-  }): Promise<unknown[]>;
+  }): Promise<Record<string, unknown>[]>;
 }
