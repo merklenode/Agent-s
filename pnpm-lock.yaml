@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@locusgraph/client':
-        specifier: latest
+        specifier: ^0.2.1
         version: 0.2.1(@langchain/core@1.2.1)(langchain@1.5.2(@langchain/core@1.2.1))
     devDependencies:
       '@types/node':
