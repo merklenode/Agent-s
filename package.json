@@ -2,6 +2,9 @@
   "name": "agent-s",
   "version": "0.1.0",
   "private": true,
+  "dependencies": {
+    "@locusgraph/client": "^0.2.1"
+  },
   "scripts": {
     "github:evidence": "tsx scripts/github-evidence.ts extract",
     "github:evidence:check": "tsx scripts/github-evidence.ts check"
