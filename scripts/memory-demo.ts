@@ -13,6 +13,7 @@
 
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
+import type { ContextId } from './memory/index.js';
 import {
   createClientFromEnv,
   storeMemory,
@@ -128,13 +129,13 @@ async function main(): Promise<void> {
   // 7. Bulk retrieve
   // -------------------------------------------------------------------------
   log('\n-- Bulk retrieve --');
-  const results = await retrieveMemories(client, graphId, [
+  const ids: ContextId[] = [
     'fact:github_evidence',
     'fact:candidate_profile',
     'fact:nonexistent_context',
-  ]);
+  ];
+  const results = await retrieveMemories(client, graphId, ids);
   results.forEach((r, i) => {
-    const ids = ['fact:github_evidence', 'fact:candidate_profile', 'fact:nonexistent_context'] as const;
     log(`  ${ids[i]}: ${r === null ? 'null (not found)' : 'found'}`);
   });
 

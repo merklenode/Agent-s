@@ -11,9 +11,10 @@ export async function getMemoryContext(
     return await client.getContext({ graphId, context_id: contextId });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    // TODO: replace this string-match with a typed check (error status code, error
-    // class, or error.code property) once the SDK is installed. If the SDK changes
-    // its message text, genuine not-found errors will throw instead of returning null.
+    // FIXME(sdk-blocker): replace this string-match with a typed check (error.status === 404,
+    // error.code, or the SDK's error class) when the SDK PR lands — do not merge the SDK
+    // integration without resolving this. A message-text change in the SDK will silently
+    // break callers that depend on null being returned for not-found contexts.
     if (message.includes('Context not found')) {
       return null;
     }

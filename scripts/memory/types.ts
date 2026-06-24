@@ -20,10 +20,10 @@ export type ContextId = `${EventKind}:${string}`;
 // ---------------------------------------------------------------------------
 
 export interface ContextLinks {
-  related_to?: string[];
-  extends?: string[];
-  reinforces?: string[];
-  contradicts?: string[];
+  related_to?: ContextId[];
+  extends?: ContextId[];
+  reinforces?: ContextId[];
+  contradicts?: ContextId[];
 }
 
 // ---------------------------------------------------------------------------
@@ -54,10 +54,10 @@ export interface LocusGraphClient {
     source: string;
     context_id: string;
     payload: { data: Record<string, unknown> };
-    related_to?: string[];
-    extends?: string[];
-    reinforces?: string[];
-    contradicts?: string[];
+    related_to?: ContextId[];
+    extends?: ContextId[];
+    reinforces?: ContextId[];
+    contradicts?: ContextId[];
   }): Promise<unknown>;
 
   getContext(params: {
