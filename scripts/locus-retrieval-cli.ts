@@ -3,6 +3,7 @@ import { resolve, dirname } from "node:path";
 import {
   checkLocusCredentials,
   createLocusClient,
+  parseCliArgs,
   runWorkflow,
   validateOutput,
   LocusValidationError,
@@ -15,9 +16,10 @@ const REPO_ROOT = resolve(SCRIPT_DIR, "..");
 const OUTPUT_PATH = resolve(REPO_ROOT, "generated/locus-retrieval/locus-retrieval.json");
 
 // ---------------------------------------------------------------------------
-// Default config — wires the resume-agent retrieval task
-// Override by setting LOCUSGRAPH_AGENT_SECRET and LOCUSGRAPH_GRAPH_ID in env.
-// Future: parse optional --query / --limit / --context-ids flags from argv.
+// Default config — wires the resume-agent retrieval task.
+// Override credentials via env: LOCUSGRAPH_AGENT_SECRET, LOCUSGRAPH_GRAPH_ID.
+// Override query/limit/context-ids at call time:
+//   pnpm locus:retrieval -- --query "..." --limit 5 --context-ids "a,b"
 // ---------------------------------------------------------------------------
 
 const DEFAULT_CONFIG: LocusWorkflowConfig = {
@@ -48,18 +50,36 @@ async function retrieve(): Promise<void> {
     process.exit(1);
   }
 
+  let args;
+  try {
+    args = parseCliArgs(process.argv.slice(2));
+  } catch (e) {
+    console.error(`ERROR: ${(e as Error).message}`);
+    process.exit(1);
+  }
+
+  const config: LocusWorkflowConfig = {
+    ...DEFAULT_CONFIG,
+    retrieval: {
+      ...DEFAULT_CONFIG.retrieval,
+      ...(args.query !== undefined ? { query: args.query } : {}),
+      ...(args.limit !== undefined ? { limit: args.limit } : {}),
+      ...(args.contextIds !== undefined ? { contextIds: args.contextIds } : {}),
+    },
+  };
+
   const client = createLocusClient();
   const warnings: string[] = [];
   const today = new Date().toISOString().slice(0, 10);
 
   console.log("Querying LocusGraph...");
-  console.log(`  graph:   ${DEFAULT_CONFIG.retrieval.graphId}`);
-  console.log(`  query:   ${DEFAULT_CONFIG.retrieval.query}`);
-  console.log(`  limit:   ${DEFAULT_CONFIG.retrieval.limit}`);
+  console.log(`  graph:   ${config.retrieval.graphId}`);
+  console.log(`  query:   ${config.retrieval.query}`);
+  console.log(`  limit:   ${config.retrieval.limit}`);
 
   let output: LocusRetrievalOutput;
   try {
-    output = await runWorkflow(client, DEFAULT_CONFIG, warnings, today);
+    output = await runWorkflow(client, config, warnings, today);
   } catch (e) {
     console.error(`ERROR: ${(e as Error).message}`);
     process.exit(1);

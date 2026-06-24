@@ -94,6 +94,52 @@ export class LocusValidationError extends Error {
 }
 
 // ---------------------------------------------------------------------------
+// CLI argument types
+// ---------------------------------------------------------------------------
+
+export interface CliArgs {
+  query?: string;
+  limit?: number;
+  contextIds?: string[];
+}
+
+// ---------------------------------------------------------------------------
+// CLI argument parsing
+// ---------------------------------------------------------------------------
+
+export function parseCliArgs(argv: string[]): CliArgs {
+  const result: CliArgs = {};
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === undefined) continue;
+    if (arg === "--query") {
+      const next = argv[i + 1];
+      if (next !== undefined) {
+        result.query = next;
+        i++;
+      }
+    } else if (arg === "--limit") {
+      const next = argv[i + 1];
+      if (next !== undefined) {
+        const n = Number(next);
+        if (isNaN(n) || n <= 0 || !Number.isInteger(n)) {
+          throw new LocusValidationError("--limit must be a positive integer");
+        }
+        result.limit = n;
+        i++;
+      }
+    } else if (arg === "--context-ids") {
+      const next = argv[i + 1];
+      if (next !== undefined) {
+        result.contextIds = next.split(",").map((s) => s.trim());
+        i++;
+      }
+    }
+  }
+  return result;
+}
+
+// ---------------------------------------------------------------------------
 // Credential validation
 // ---------------------------------------------------------------------------
 

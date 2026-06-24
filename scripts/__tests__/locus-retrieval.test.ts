@@ -2,6 +2,7 @@ import { describe, it, before, after } from "node:test";
 import assert from "node:assert/strict";
 import {
   checkLocusCredentials,
+  parseCliArgs,
   runRetrieval,
   runInsights,
   buildOutput,
@@ -9,6 +10,7 @@ import {
   runWorkflow,
   LocusRetrievalError,
   LocusValidationError,
+  type CliArgs,
   type LocusGraphClientLike,
   type LocusWorkflowConfig,
   type ContextResult,
@@ -358,5 +360,80 @@ describe("runWorkflow", () => {
     assert.ok(output.memories.length > 0, "memories should be non-empty");
     assert.ok(output.resume_relevance_insight.insight.length > 0, "insight should be non-empty");
     assert.equal(output.resume_relevance_insight.confidence, "high");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseCliArgs
+// ---------------------------------------------------------------------------
+
+describe("parseCliArgs", () => {
+  it("returns empty object for empty argv", () => {
+    const result: CliArgs = parseCliArgs([]);
+    assert.deepEqual(result, {});
+  });
+
+  it("returns empty object when only subcommand is present", () => {
+    const result: CliArgs = parseCliArgs(["retrieve"]);
+    assert.deepEqual(result, {});
+  });
+
+  it("parses --query into query field", () => {
+    const result = parseCliArgs(["--query", "senior engineer skills"]);
+    assert.equal(result.query, "senior engineer skills");
+  });
+
+  it("parses --limit into numeric limit field", () => {
+    const result = parseCliArgs(["--limit", "5"]);
+    assert.equal(result.limit, 5);
+  });
+
+  it("parses --context-ids CSV into string array", () => {
+    const result = parseCliArgs(["--context-ids", "fact:resume_evidence,fact:project"]);
+    assert.deepEqual(result.contextIds, ["fact:resume_evidence", "fact:project"]);
+  });
+
+  it("parses all three flags together", () => {
+    const result = parseCliArgs([
+      "retrieve",
+      "--query", "q",
+      "--limit", "3",
+      "--context-ids", "a,b",
+    ]);
+    assert.equal(result.query, "q");
+    assert.equal(result.limit, 3);
+    assert.deepEqual(result.contextIds, ["a", "b"]);
+  });
+
+  it("ignores unknown flags and still parses known ones", () => {
+    const result = parseCliArgs(["--unknown", "x", "--query", "hello"]);
+    assert.equal(result.query, "hello");
+    assert.equal(result.limit, undefined);
+  });
+
+  it("trims whitespace from --context-ids segments", () => {
+    const result = parseCliArgs(["--context-ids", " a , b "]);
+    assert.deepEqual(result.contextIds, ["a", "b"]);
+  });
+
+  it("throws LocusValidationError for non-numeric --limit", () => {
+    assert.throws(
+      () => parseCliArgs(["--limit", "abc"]),
+      LocusValidationError
+    );
+  });
+
+  it("throws LocusValidationError for --limit of zero", () => {
+    assert.throws(
+      () => parseCliArgs(["--limit", "0"]),
+      LocusValidationError
+    );
+  });
+
+  it("throws LocusValidationError for negative --limit", () => {
+    assert.throws(
+      () => parseCliArgs(["--limit", "-1"]),
+      LocusValidationError
+    );
   });
 });
