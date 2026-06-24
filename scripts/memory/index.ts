@@ -2,7 +2,7 @@ export type {
   ContextId,
   ContextLinks,
   EventKind,
-  LocusGraphClient,
+  LocusGraphMemoryClient,
   StoreMemoryParams,
 } from './types.js';
 

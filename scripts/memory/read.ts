@@ -1,12 +1,12 @@
-import type { ContextId, EventKind, LocusGraphClient } from './types.js';
+import type { ContextId, EventKind, LocusGraphMemoryClient } from './types.js';
 
 // Returns null when the context does not exist yet — expected during first
 // runs. Re-throws anything else so real errors don't get silently swallowed.
 export async function getMemoryContext(
-  client: LocusGraphClient,
+  client: LocusGraphMemoryClient,
   graphId: string,
   contextId: ContextId
-): Promise<Record<string, unknown> | null> {
+): Promise<unknown | null> {
   try {
     return await client.getContext({ graphId, context_id: contextId });
   } catch (err) {
@@ -23,25 +23,27 @@ export async function getMemoryContext(
 }
 
 export async function listMemoryContexts(
-  client: LocusGraphClient,
+  client: LocusGraphMemoryClient,
   graphId: string,
   type?: EventKind,
   limit = 50
-): Promise<Record<string, unknown>[]> {
-  return client.listContexts({
-    graphId,
-    ...(type !== undefined && { context_type: type }),
-    limit,
-  });
+): Promise<unknown[]> {
+  if (type !== undefined) {
+    const result = await client.listContextsByType(type, graphId, { page_size: limit });
+    return result.contexts;
+  }
+
+  const result = await client.listContextTypes(graphId, { page_size: limit });
+  return result.context_types;
 }
 
 // Fetches multiple contexts in parallel. Each position in the result maps
 // 1-to-1 with the input ids: null means that context doesn't exist yet.
 export async function retrieveMemories(
-  client: LocusGraphClient,
+  client: LocusGraphMemoryClient,
   graphId: string,
   contextIds: ContextId[]
-): Promise<Array<Record<string, unknown> | null>> {
+): Promise<Array<unknown | null>> {
   return Promise.all(
     contextIds.map((id) => getMemoryContext(client, graphId, id))
   );

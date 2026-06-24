@@ -9,18 +9,11 @@ import {
   LocusValidationError,
   type LocusWorkflowConfig,
   type LocusRetrievalOutput,
-} from "./locus-retrieval";
+} from "./index.js";
 
 const SCRIPT_DIR = dirname(__filename);
-const REPO_ROOT = resolve(SCRIPT_DIR, "..");
+const REPO_ROOT = resolve(SCRIPT_DIR, "../..");
 const OUTPUT_PATH = resolve(REPO_ROOT, "generated/locus-retrieval/locus-retrieval.json");
-
-// ---------------------------------------------------------------------------
-// Default config — wires the resume-agent retrieval task.
-// Override credentials via env: LOCUSGRAPH_AGENT_SECRET, LOCUSGRAPH_GRAPH_ID.
-// Override query/limit/context-ids at call time:
-//   pnpm locus:retrieval -- --query "..." --limit 5 --context-ids "a,b"
-// ---------------------------------------------------------------------------
 
 const DEFAULT_CONFIG: LocusWorkflowConfig = {
   taskLabel: "resume-evidence-backend-reliability",
@@ -38,10 +31,6 @@ const DEFAULT_CONFIG: LocusWorkflowConfig = {
     limit: 10,
   },
 };
-
-// ---------------------------------------------------------------------------
-// Retrieve command
-// ---------------------------------------------------------------------------
 
 async function retrieve(): Promise<void> {
   const credError = checkLocusCredentials();
@@ -114,10 +103,6 @@ Summary:
   }
 }
 
-// ---------------------------------------------------------------------------
-// Check command
-// ---------------------------------------------------------------------------
-
 function check(): void {
   if (!existsSync(OUTPUT_PATH)) {
     console.error(`ERROR: ${OUTPUT_PATH} does not exist.`);
@@ -158,10 +143,6 @@ function check(): void {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Entry point
-// ---------------------------------------------------------------------------
-
 const command = process.argv[2];
 
 if (command === "retrieve") {
@@ -172,6 +153,6 @@ if (command === "retrieve") {
 } else if (command === "check") {
   check();
 } else {
-  console.error("Usage: tsx scripts/locus-retrieval-cli.ts [retrieve|check]");
+  console.error("Usage: tsx scripts/locus-retrieval/cli.ts [retrieve|check]");
   process.exit(1);
 }

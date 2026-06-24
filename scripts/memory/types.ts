@@ -1,13 +1,12 @@
-// ---------------------------------------------------------------------------
-// Core event kinds — mirrors the LocusGraph SDK's event_kind enum
-// ---------------------------------------------------------------------------
+import type {
+  ContextListResponse,
+  ContextTypesResponse,
+  CreateEventApiRequest,
+  GetContextResponse,
+} from '@locusgraph/client';
 
-export type EventKind =
-  | 'fact'        // persistent generated data, preferences, knowledge
-  | 'action'      // completed operations
-  | 'decision'    // choices made by the agent
-  | 'observation' // general notes
-  | 'feedback';   // user or validator feedback
+export type EventKind = CreateEventApiRequest['event_kind'];
+export type EventSource = NonNullable<CreateEventApiRequest['source']>;
 
 // ---------------------------------------------------------------------------
 // Context ID — enforces the `type:name` stable format at compile time
@@ -33,7 +32,7 @@ export interface ContextLinks {
 export interface StoreMemoryParams<T extends Record<string, unknown>> extends ContextLinks {
   event_kind: EventKind;
   context_id: ContextId;
-  source: string;
+  source?: EventSource;
   payload: {
     data: T;
   };
@@ -47,27 +46,18 @@ export interface StoreMemoryParams<T extends Record<string, unknown>> extends Co
 // use graphId (camelCase). This mirrors the SDK's own inconsistency exactly.
 // ---------------------------------------------------------------------------
 
-export interface LocusGraphClient {
-  storeEvent(params: {
-    graph_id: string;
-    event_kind: EventKind;
-    source: string;
-    context_id: string;
-    payload: { data: Record<string, unknown> };
-    related_to?: ContextId[];
-    extends?: ContextId[];
-    reinforces?: ContextId[];
-    contradicts?: ContextId[];
-  }): Promise<unknown>;
+export interface LocusGraphMemoryClient {
+  storeEvent(params: CreateEventApiRequest): Promise<unknown>;
 
   getContext(params: {
     graphId: string;
     context_id: string;
-  }): Promise<Record<string, unknown>>;
+  }): Promise<GetContextResponse>;
 
-  listContexts(params: {
-    graphId: string;
-    context_type?: EventKind;
-    limit?: number;
-  }): Promise<Record<string, unknown>[]>;
+  listContextTypes(graphId?: string, options?: { page_size?: number }): Promise<ContextTypesResponse>;
+  listContextsByType(
+    contextType: string,
+    graphId?: string,
+    options?: { page_size?: number }
+  ): Promise<ContextListResponse>;
 }

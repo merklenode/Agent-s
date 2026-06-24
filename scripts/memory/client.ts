@@ -1,9 +1,14 @@
-import type { LocusGraphClient } from './types.js';
+import type { LocusGraphMemoryClient } from './types.js';
 
 export interface LocusGraphSession {
-  client: LocusGraphClient;
+  client: LocusGraphMemoryClient;
   graphId: string;
 }
+
+type LocusGraphClientConstructor = new (config: {
+  serverUrl?: string;
+  agentSecret?: string;
+}) => LocusGraphMemoryClient;
 
 export function createClientFromEnv(): LocusGraphSession {
   const agentSecret = process.env['LOCUSGRAPH_AGENT_SECRET'];
@@ -17,15 +22,12 @@ export function createClientFromEnv(): LocusGraphSession {
     );
   }
 
-  let LocusGraphClientCtor: new (config: {
-    serverUrl?: string;
-    agentSecret?: string;
-  }) => LocusGraphClient;
+  let LocusGraphClientCtor: LocusGraphClientConstructor;
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const mod = require('@locusgraph/client') as {
-      LocusGraphClient: typeof LocusGraphClientCtor;
+      LocusGraphClient: LocusGraphClientConstructor;
     };
     LocusGraphClientCtor = mod.LocusGraphClient;
   } catch (e) {
@@ -49,7 +51,7 @@ export function createClientFromEnv(): LocusGraphSession {
 // Accepts an already-constructed SDK client — useful in tests and when the
 // caller manages the SDK lifecycle itself.
 export function createSession(
-  client: LocusGraphClient,
+  client: LocusGraphMemoryClient,
   graphId: string
 ): LocusGraphSession {
   return { client, graphId };
