@@ -4,6 +4,7 @@ import { storeMemory } from './memory/write.js';
 import { createClientFromEnv } from './memory/client.js';
 import type { LocusGraphClient, ContextId } from './memory/types.js';
 
+// CJS-only: __filename and require.main are not available under ESM.
 const SCRIPT_DIR = dirname(__filename);
 const REPO_ROOT = resolve(SCRIPT_DIR, '..');
 const EVIDENCE_PATH = resolve(
@@ -94,6 +95,9 @@ export async function storeEvidenceEvents(
 ): Promise<StoreSummary> {
   const factId: ContextId = 'fact:github_evidence';
 
+  // NOTE: These two writes are not atomic. If the second fails, the fact event is
+  // already stored. Whether a retry creates a duplicate depends on the SDK's upsert
+  // semantics for a fixed context_id.
   await storeMemory(client, graphId, {
     event_kind: 'fact',
     context_id: factId,
@@ -110,20 +114,27 @@ export async function storeEvidenceEvents(
     },
   });
 
-  await storeMemory(client, graphId, {
-    event_kind: 'action',
-    context_id: 'action:github_evidence_stored',
-    source: 'pnpm github:evidence:store',
-    payload: {
-      data: {
-        file_path: filePath,
-        evidence_updated: evidence.updated,
-        repository_count: evidence.repositories.length,
-        stored_at: storedAt,
+  try {
+    await storeMemory(client, graphId, {
+      event_kind: 'action',
+      context_id: 'action:github_evidence_stored',
+      source: 'pnpm github:evidence:store',
+      payload: {
+        data: {
+          file_path: filePath,
+          evidence_updated: evidence.updated,
+          repository_count: evidence.repositories.length,
+          stored_at: storedAt,
+        },
       },
-    },
-    reinforces: [factId],
-  });
+      reinforces: [factId],
+    });
+  } catch (e) {
+    console.error(
+      'Partial write: fact:github_evidence was stored but action:github_evidence_stored failed.'
+    );
+    throw e;
+  }
 
   return { eventsStored: 2, graphId, storedAt };
 }

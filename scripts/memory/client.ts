@@ -28,10 +28,11 @@ export function createClientFromEnv(): LocusGraphSession {
       LocusGraphClient: typeof LocusGraphClientCtor;
     };
     LocusGraphClientCtor = mod.LocusGraphClient;
-  } catch {
-    throw new Error(
-      '@locusgraph/client is not installed. Run: pnpm install'
-    );
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') {
+      throw new Error('@locusgraph/client is not installed. Run: pnpm install');
+    }
+    throw new Error('@locusgraph/client failed to load: ' + (e as Error).message);
   }
 
   if (typeof LocusGraphClientCtor !== 'function') {
