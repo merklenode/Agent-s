@@ -35,3 +35,4 @@ Never commit `.env` to version control.
 |---|---|
 | `pnpm github:evidence` | Fetch all GitHub repos and extract resume evidence |
 | `pnpm github:evidence:check` | Validate a previously extracted evidence file |
+| `pnpm github:evidence:store` | Store extracted evidence in LocusGraph (requires `LOCUSGRAPH_AGENT_SECRET`) |
