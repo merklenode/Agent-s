@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "github:evidence": "tsx scripts/github-evidence.ts extract",
-    "github:evidence:check": "tsx scripts/github-evidence.ts check"
+    "github:evidence:check": "tsx scripts/github-evidence.ts check",
+    "memory:demo": "tsx scripts/memory-demo.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
