@@ -79,9 +79,9 @@ export class LocusCredentialError extends Error {
 export class LocusRetrievalError extends Error {
   constructor(
     message: string,
-    public readonly cause?: unknown
+    cause?: unknown
   ) {
-    super(message);
+    super(message, { cause });
     this.name = "LocusRetrievalError";
   }
 }
@@ -138,7 +138,7 @@ export function createLocusClient(): LocusGraphClientLike {
   }
 
   return new LocusGraphClient({
-    serverUrl: process.env["LOCUSGRAPH_SERVER_URL"],
+    ...(process.env["LOCUSGRAPH_SERVER_URL"] ? { serverUrl: process.env["LOCUSGRAPH_SERVER_URL"] } : {}),
     agentSecret,
   });
 }

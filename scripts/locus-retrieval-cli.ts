@@ -65,9 +65,6 @@ async function retrieve(): Promise<void> {
     process.exit(1);
   }
 
-  mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
-  writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
-
   try {
     validateOutput(output);
   } catch (e) {
@@ -77,6 +74,9 @@ async function retrieve(): Promise<void> {
     }
     throw e;
   }
+
+  mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
+  writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
 
   console.log(`\nOutput written: ${OUTPUT_PATH}`);
   console.log(`
