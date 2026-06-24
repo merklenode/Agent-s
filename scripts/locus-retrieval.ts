@@ -127,11 +127,13 @@ export function parseCliArgs(argv: string[]): CliArgs {
         }
         result.limit = n;
         i++;
+      } else {
+        throw new LocusValidationError("--limit requires a value");
       }
     } else if (arg === "--context-ids") {
       const next = argv[i + 1];
       if (next !== undefined) {
-        result.contextIds = next.split(",").map((s) => s.trim());
+        result.contextIds = next.split(",").map((s) => s.trim()).filter((s) => s.length > 0);
         i++;
       }
     }
@@ -180,6 +182,12 @@ export function createLocusClient(): LocusGraphClientLike {
   } catch {
     throw new LocusCredentialError(
       "@locusgraph/client is not installed. Run: pnpm install"
+    );
+  }
+
+  if (typeof LocusGraphClient !== "function") {
+    throw new LocusCredentialError(
+      "@locusgraph/client does not export LocusGraphClient"
     );
   }
 
@@ -324,6 +332,7 @@ export async function runWorkflow(
     warnings.push("retrieveMemories returned 0 items — graph may be empty or query too specific");
   }
 
+  // generateInsights queries the graph independently via locusQuery — not derived from retrieval results
   const insightResult = await runInsights(client, config.insight);
 
   return buildOutput(config, retrievalResult, insightResult, warnings, updatedAt);
