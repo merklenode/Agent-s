@@ -6,11 +6,14 @@ export async function getMemoryContext(
   client: LocusGraphClient,
   graphId: string,
   contextId: ContextId
-): Promise<unknown | null> {
+): Promise<Record<string, unknown> | null> {
   try {
     return await client.getContext({ graphId, context_id: contextId });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    // TODO: replace this string-match with a typed check (error status code, error
+    // class, or error.code property) once the SDK is installed. If the SDK changes
+    // its message text, genuine not-found errors will throw instead of returning null.
     if (message.includes('Context not found')) {
       return null;
     }
@@ -37,7 +40,7 @@ export async function retrieveMemories(
   client: LocusGraphClient,
   graphId: string,
   contextIds: ContextId[]
-): Promise<Array<unknown | null>> {
+): Promise<Array<Record<string, unknown> | null>> {
   return Promise.all(
     contextIds.map((id) => getMemoryContext(client, graphId, id))
   );

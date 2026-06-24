@@ -16,7 +16,7 @@ export async function storeMemory<T extends Record<string, unknown>>(
     event_kind,
     source,
     context_id,
-    payload: { data: payload.data as Record<string, unknown> },
+    payload: { data: payload.data },
     ...(related_to !== undefined && { related_to }),
     ...(extendsLinks !== undefined && { extends: extendsLinks }),
     ...(reinforces !== undefined && { reinforces }),

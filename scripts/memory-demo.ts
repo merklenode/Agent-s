@@ -64,6 +64,12 @@ async function main(): Promise<void> {
   // -------------------------------------------------------------------------
   // 3. Load candidate profile
   // -------------------------------------------------------------------------
+  if (!existsSync(CANDIDATE_PATH)) {
+    process.stderr.write(
+      'Candidate profile not found. Expected at resume-agent-dataset/candidate/candidate-profile.json\n'
+    );
+    process.exit(1);
+  }
   const candidateRaw = readFileSync(CANDIDATE_PATH, 'utf-8');
   const candidateData = JSON.parse(candidateRaw) as Record<string, unknown>;
 
