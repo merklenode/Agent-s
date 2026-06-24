@@ -1,15 +1,3 @@
-// ---------------------------------------------------------------------------
-// LocusGraph client factory
-//
-// To use this module, install the SDK and replace the stub below:
-//   pnpm add @merklenode/locusgraph-sdk   (confirm exact package name with team)
-//
-// Then swap the `createClient` body for:
-//   import { LocusGraphSdk } from '@merklenode/locusgraph-sdk';
-//   const sdk = new LocusGraphSdk({ apiKey });
-//   return { client: sdk, graphId };
-// ---------------------------------------------------------------------------
-
 import type { LocusGraphClient } from './types.js';
 
 export interface LocusGraphSession {
@@ -18,21 +6,44 @@ export interface LocusGraphSession {
 }
 
 export function createClientFromEnv(): LocusGraphSession {
-  const apiKey = process.env['LOCUS_API_KEY'];
-  const graphId = process.env['LOCUS_GRAPH_ID'];
+  const agentSecret = process.env['LOCUSGRAPH_AGENT_SECRET'];
+  const graphId = process.env['LOCUSGRAPH_GRAPH_ID'] ?? 'default';
+  const serverUrl = process.env['LOCUSGRAPH_SERVER_URL'];
 
-  if (!apiKey || !graphId) {
+  if (!agentSecret) {
     throw new Error(
-      'Missing required env vars: set LOCUS_API_KEY and LOCUS_GRAPH_ID before running this script.'
+      'Missing required env var: LOCUSGRAPH_AGENT_SECRET.\n' +
+      'Copy .env.example to .env and fill in your LocusGraph agent secret.'
     );
   }
 
-  // TODO: replace with real SDK once package name is confirmed.
-  // Import the SDK client here and pass `apiKey` to its constructor.
-  throw new Error(
-    'LocusGraph SDK not yet installed. ' +
-    'See the TODO in scripts/memory/client.ts and install the SDK package first.'
-  );
+  let LocusGraphClientCtor: new (config: {
+    serverUrl?: string;
+    agentSecret?: string;
+  }) => LocusGraphClient;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const mod = require('@locusgraph/client') as {
+      LocusGraphClient: typeof LocusGraphClientCtor;
+    };
+    LocusGraphClientCtor = mod.LocusGraphClient;
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') {
+      throw new Error('@locusgraph/client is not installed. Run: pnpm install');
+    }
+    throw new Error('@locusgraph/client failed to load: ' + (e as Error).message);
+  }
+
+  if (typeof LocusGraphClientCtor !== 'function') {
+    throw new Error('@locusgraph/client does not export LocusGraphClient');
+  }
+
+  const client = new LocusGraphClientCtor({
+    ...(serverUrl ? { serverUrl } : {}),
+    agentSecret,
+  });
+  return { client, graphId };
 }
 
 // Accepts an already-constructed SDK client — useful in tests and when the
